@@ -17,8 +17,11 @@ Receptomat
 
 ## Projektni tim
 Nika Antolić (nantolic22)
+
 David Brckan (dbrckan22)
+
 Franjo Čotić (fcotic22)
+
 (svi članovi tima moraju biti iz iste seminarske grupe)
 
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime | Seminarska grupa
