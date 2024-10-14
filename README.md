@@ -12,14 +12,18 @@ Sav programski kod potrebno je verzionirati u glavnoj **master** grani i **obvez
 Nakon vaše prijave bit će vam dodijeljen mentor s kojim ćete tijekom semestra raditi na ovom projektu. Mentor će vam slati povratne informacije kroz sekciju Discussions također dostupnu na GitHubu vašeg projekta. A sada, vrijeme je da prijavite vaš projekt. Za prijavu vašeg projektnog prijedloga molimo vas koristite **predložak** koji je naveden u nastavku, a započnite tako da kliknete na *olovku* u desnom gornjem kutu ovoga dokumenta :) 
 
 # Naziv projekta
+Receptomat
 (u redak iznad navedite kratki proizvoljni naziv projekta prikladan akademskoj zajednici, a ovaj tekst kao i uvodni tekst iznad obrišite)
 
 ## Projektni tim
+Nika Antolić (nantolic22)
+David Brckan (dbrckan22)
+Franjo Čotić (fcotic22)
 (svi članovi tima moraju biti iz iste seminarske grupe)
 
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime | Seminarska grupa
 ------------  | ------------------- | ----- | --------------------- | ----------------
-Ime i prezime | mojaadresa@foi.hr | 000000000 | githubuser | G01
+Ime i prezime | dbrckan22@foi.hr | 0016159400 | dbrckan22 | G01
 Ime i prezime | ... | ... | ... | ...
 
 ## Opis domene
