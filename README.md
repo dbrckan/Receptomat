@@ -27,7 +27,7 @@ Franjo Čotić (fcotic22)
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime | Seminarska grupa
 ------------  | ------------------- | ----- | --------------------- | ----------------
 David Brckan | dbrckan22@foi.hr | 0016159400 | dbrckan22 | G01
-Nika Antolić | ... | ... | ... | ...
+Nika Antolić | nantolic22@student.foi.hr | 0016160424 | nantolic22 | G01
 Franjo Čotić | ... | ... | ... | ...
 
 ## Opis domene
