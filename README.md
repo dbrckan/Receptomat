@@ -22,13 +22,11 @@ David Brckan (dbrckan22)
 
 Franjo Čotić (fcotic22)
 
-(svi članovi tima moraju biti iz iste seminarske grupe)
-
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime | Seminarska grupa
 ------------  | ------------------- | ----- | --------------------- | ----------------
-David Brckan | dbrckan22@foi.hr | 0016159400 | dbrckan22 | G01
+David Brckan | dbrckan22@student.foi.hr | 0016159400 | dbrckan22 | G01
 Nika Antolić | nantolic22@student.foi.hr | 0016160424 | nantolic22 | G01
-Franjo Čotić | ... | ... | ... | ...
+Franjo Čotić | fcotic22@student.foi.hr | 0016160029 | fcotic22 | G01
 
 ## Opis domene
 Umjesto ovih uputa opišite domenu ili problem koji pokrivate vašim projektom. Domena može biti proizvoljna, ali obratite pozornost da sukladno ishodima učenja, domena omogući primjenu zahtijevanih koncepata kako je to navedeno u sljedećem poglavlju. Priložite odgovarajuće skice gdje je to prikladno.
