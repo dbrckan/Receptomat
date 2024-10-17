@@ -1,12 +1,6 @@
 # Receptomat
 
 ## Projektni tim
-Nika Antolić (nantolic22)
-
-David Brckan (dbrckan22)
-
-Franjo Čotić (fcotic22)
-
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime | Seminarska grupa
 ------------  | ------------------- | ----- | --------------------- | ----------------
 David Brckan | dbrckan22@student.foi.hr | 0016159400 | dbrckan22 | G01
