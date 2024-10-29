@@ -15,17 +15,14 @@ Ova mobilna aplikacija korisnicima omogućava jednostavan i učinkovit način or
 Oznaka | Naziv | Kratki opis | Odgovorni član tima
 ------ | ----- | ----------- | -------------------
 F01 | Registracija | Za pristup aplikaciji potrebna je izrada korisničkog računa kako bi korisnik mogao pristupiti svim funkcionalnostima aplikacije. | Nika Antolić
-F02 | Prijava | Za pristup aplikaciji potrebna je autentifikacija tako što korisnik unosi korisničko ime i lozinku ako već ima kreiran korisnički račun. | David Brckan
-F03 | Prikaz recepta | Aplikacija mora omogućiti pregledavanje dostupnih recepata. | Nika Antolić
-F04 | Kreiranje recepta | Aplikacija nudi mogućnost kreiranja novog recepta sa svim potrebnim sastojcima i količinom kao i spremanje istog. | David Brckan
-F05 | Uređivanje recepta | Aplikacija nudi mogućnost uređivanja postojećih recepata koje je korisnik dodao. | Franjo Čotić
-F06 | Brisanje recepta | Aplikacija nudi mogućnost brisanja recepata koje je korisnik doda. | Franjo Čotić
-F07 | Dodavanje sastojaka u listu za kupovinu | Aplikacija omogućuje korisniku dodavanje sastojaka s određenog recepta u listu za kupovinu te omogućuje ručno dodavanje novih stavki koje nisu povezane s određenim receptom. | Nika Antolić
-F08 | Brisanje sastojaka iz liste za kupovinu | Korisnik treba imati mogućnost ukloniti sastojke s liste za kupovinu kad ih više ne treba ili ih je već kupio. | David Brckan
-F09 | Upravljanje favoritima | Korisnik treba imati mogućnost označiti recepte kao omiljene te ih pohraniti u zasebnu listu za brži pristup. | Nika Antolić
-F10 | Pretraživanje recepata | Aplikacija treba omogućiti korisniku pretraživanje recepata prema ključnim riječima | David Brckan
-F11 | Količina potrebnih sastojaka |Aplikacija sadrži mogućnost izračuna potrebne količine sastojaka prema zabilježenom receptu za određenu količinu hrane. | Franjo Čotić
-F12 | Recenzije | Aplikacija omogućuje korisnicima ocijenjivanje i komentiranje recepta koje su isprobali čime se poboljšava korisničko iskustvo. | Franjo Čotić
+F02 | Prijava | Za pristup aplikaciji potrebna je autentifikacija tako što korisnik unosi korisničko ime i lozinku ako već ima kreiran korisnički račun. Omogućena je i dvofaktorska (2FA) autentifikacija koja uključuje dodatan kod poslan putem e-pošte. | David Brckan
+F03 | Upravljanje receptima |Aplikacija omogućuje korisnicima pregledavanje, kreiranje, uređivanje i brisanje recepata. Korisnici mogu dodavati nove recepte s potrebnim sastojcima, ažurirati postojeće recepte te brisati recepte koje više ne žele imati u aplikaciji. | Nika Antolić
+F04 | Upravljanje listom za kupovinu | Aplikacija omogućuje korisnicima prikaz same liste te dodavanje sastojaka na listu za kupovinu s bilo kojeg recepta ili ručno unesenih stavki. Također, omogućuje korisnicima uklanjanje sastojaka s liste kada ih više ne trebaju ili su ih već kupili. | David Brckan
+F05 | Korisnički profil | Korisnici mogu prilagoditi profil svojim preferencijama (npr. vegetarijanski, bezglutenski), mogu ažurirati svoje podatke te prilagoditi postavke privatnosti. Također, korisnici mogu odabrati željenu razinu obavijesti. | David Brckan
+F06 | Upravljanje favoritima | Korisnik treba imati mogućnost označiti recepte kao omiljene te ih pohraniti u zasebnu listu za brži pristup. | Franjo Čotić
+F07 | Pretraživanje recepata | Aplikacija treba omogućiti korisniku pretraživanje recepata prema ključnim riječima | Nika Antolić
+F08 | Planiranje obroka | Aplikacija omogućava korisnicima planiranje recepata za cijeli tjedan. Korisnici mogu odabrati recepte te ih rasporediti prema danima u tjednu. Također, na temelju planiranih recepata, aplikacija generira popis za kupovinu s potrebnim sastojcima i količinama. | Franjo Čotić
+F09 | Recenzije | Aplikacija omogućuje korisnicima ocijenjivanje i komentiranje recepta koje su isprobali čime se poboljšava korisničko iskustvo. | Franjo Čotić
 
 ## Tehnologije i oprema
 Za implementaciju aplikacije koristit ćemo Android Studio s Kotlin programskim jezikom, dok će se za verzioniranje koristiti Git i GitHub. Projektna dokumentacija bit će vođena putem GitHub Wiki-ja, a planiranje i praćenje zadataka putem GitHub Projects. Kao literaturu koristit ćemo materijale s kolegija "Razvoj aplikacija za mobilne i pametne uređaje" te službenu Kotlin dokumentaciju dostupnu na https://kotlinlang.org/.
