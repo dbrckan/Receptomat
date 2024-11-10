@@ -200,7 +200,7 @@ obj/
 *.ap_
 *.aab
 
-.idea/
+
 
 /build/  # Ignoriraj cijeli build folder
 /local.properties  # Ignoriraj local.properties u rootu
