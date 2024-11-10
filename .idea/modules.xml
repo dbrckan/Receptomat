@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rampu24-cobra-n.iml" filepath="$PROJECT_DIR$/.idea/rampu24-cobra-n.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Software/software_modul/software_modul.iml" filepath="$PROJECT_DIR$/Software/software_modul/software_modul.iml" />
-    </modules>
-  </component>
-</project>
