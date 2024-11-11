@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Receptomat</string>
+    <string name="back_picture">Pozadinska slika</string>
+    <string name="welcome">Dobrodošli na</string>
+    <string name="Receptomat_caps_lock">RECEPTOMAT</string>
+    <string name="register">Registracija</string>
+    <string name="login">Pijava</string>
+    <string name="username">Korisničko ime</string>
+    <string name="password">Password\n</string>
+    <string name="Email">Email</string>
 </resources>
