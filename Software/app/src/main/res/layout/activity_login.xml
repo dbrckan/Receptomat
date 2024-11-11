@@ -43,14 +43,14 @@
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginTop="24dp"
+        android:layout_marginVertical="20dp"
         android:background="@drawable/edit_text"
         android:drawableStart="@drawable/ic_username"
         android:drawablePadding="6sp"
-        android:autofillHints="username"
-        app:layout_constraintWidth_default="wrap"/>
+        android:autofillHints="username"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -62,13 +62,14 @@
         app:layout_constraintTop_toBottomOf="@id/usernameEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/edit_text"
         android:drawableStart="@drawable/ic_password"
         android:drawablePadding="6sp"
-        android:autofillHints="password"
-        app:layout_constraintWidth_default="wrap"/>
+        android:autofillHints="password"/>
+
 
 
     <Button
