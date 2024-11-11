@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Receptomat</string>
+    <string name="image_description">Slika</string>
+    <string name="login_title">Prijava</string>
+    <string name="username_hint">Korisničko ime</string>
+    <string name="password_hint">Lozinka</string>
+    <string name="login_button">Prijavi se</string>
+    <string name="cancel_button">Odustani</string>
 </resources>
