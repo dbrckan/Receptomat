@@ -4,8 +4,15 @@
     <string name="welcome">Dobrodošli na</string>
     <string name="Receptomat_caps_lock">RECEPTOMAT</string>
     <string name="register">Registracija</string>
-    <string name="login">Pijava</string>
-    <string name="username">Korisničko ime</string>
-    <string name="password">Password\n</string>
-    <string name="Email">Email</string>
+
+    <string name="email_hint">Email</string>
+    <string name="image_description">Slika</string>
+    <string name="login_title">Prijava</string>
+    <string name="username_hint">Korisničko ime</string>
+    <string name="password_hint">Lozinka</string>
+    <string name="login_button">Prijavi se</string>
+    <string name="cancel_button">Odustani</string>
+    <string name="name_hint">Ime i prezime\n</string>
+    <string name="password_again_hint">Ponovno unesi lozinku</string>
+    <string name="registration_button">Registriraj se</string>
 </resources>
