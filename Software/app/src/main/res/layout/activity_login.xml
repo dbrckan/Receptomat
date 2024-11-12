@@ -35,74 +35,72 @@
 
     <EditText
         android:id="@+id/usernameEditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
         android:inputType="text"
         android:padding="14dp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/edit_text"
         android:drawableStart="@drawable/ic_username"
         android:drawablePadding="6sp"
-        android:autofillHints="username"/>
+        android:autofillHints="username" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:padding="14dp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/usernameEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/edit_text"
         android:drawableStart="@drawable/ic_password"
         android:drawablePadding="6sp"
-        android:autofillHints="password"/>
-
+        android:autofillHints="password" />
 
 
     <Button
         android:id="@+id/login_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#612B2B"
         android:text="@string/login_button"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/cancel_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginVertical="10dp"
         android:backgroundTint="#612B2B"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:text="@string/cancel_button"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/login_Button"
-        app:layout_constraintHorizontal_bias="0.602"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/login_Button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
