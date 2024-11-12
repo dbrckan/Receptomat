@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (bazaKorisnika.provjeriKorisnika(username, password)) {
 
-                val intent = Intent(this, ReceptiActivity::class.java)
+                val intent = Intent(this, RecipesActivity::class.java)
                 startActivity(intent)
             } else {
                 etUsername.setTextColor(Color.RED)
