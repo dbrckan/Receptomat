@@ -6,4 +6,6 @@
     <string name="password_hint">Lozinka</string>
     <string name="login_button">Prijavi se</string>
     <string name="cancel_button">Odustani</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
