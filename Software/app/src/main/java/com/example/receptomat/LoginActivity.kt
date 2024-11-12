@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString()
 
             if (bazaKorisnika.provjeriKorisnika(username, password)) {
-
                 val intent = Intent(this, RecipesActivity::class.java)
                 startActivity(intent)
             } else {

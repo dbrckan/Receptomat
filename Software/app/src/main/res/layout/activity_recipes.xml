@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/recipes">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipes"
+    tools:context=".RecipesActivity">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
