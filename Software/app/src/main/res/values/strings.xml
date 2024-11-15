@@ -15,4 +15,5 @@
     <string name="name_hint">Ime i prezime\n</string>
     <string name="password_again_hint">Ponovno unesi lozinku</string>
     <string name="registration_button">Registriraj se</string>
+    <string name="hasAccount">Već imate račun?</string>
 </resources>

@@ -24,7 +24,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/pexels_valeriya_842571" />
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="32dp"
             android:autofillHints="username"
             android:background="@drawable/edit_text"
@@ -147,9 +147,9 @@
             android:text="@string/registration_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtConfirmPassword"
-            app:layout_constraintVertical_bias="0.26" />
+            app:layout_constraintTop_toBottomOf="@+id/txtConfirmPassword" />
 
         <Button
             android:id="@+id/btnCancel"
@@ -164,6 +164,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnRegister"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtHasAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/hasAccount"
+            android:textColor="@color/material_dynamic_neutral70"
+            app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtConfirmPassword"
+            app:layout_constraintVertical_bias="0.26" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
