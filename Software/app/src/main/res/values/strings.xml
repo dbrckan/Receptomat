@@ -10,9 +10,13 @@
     <string name="password_again_hint">Ponovno unesi lozinku</string>
     <string name="registration_button">Registriraj se</string>
     <string name="hasAccount">Već imate račun?</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="work_in_progress">Stanica je u izradi!</string>
     <string name="description">Description</string>
+    <string name="register">Registracija</string>
+    <string name="email_hint">Email</string>
+    <string name="Receptomat_caps_lock">RECEPTOMAT</string>
+    <string name="welcome">Dobrodošli na</string>
+    <string name="back_picture">Slika</string>
 </resources>
