@@ -1,12 +1,15 @@
 package com.example.receptomat.fragments
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
@@ -57,9 +60,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val btnCreateRecipe = view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
         btnCreateRecipe.setOnClickListener {
             val intent = Intent(requireContext(), AddNewRecipeActivity::class.java)
-            createRecipeResultLauncher.launch(intent) // Launch the activity using the new method
-        }
+            createRecipeResultLauncher.launch(intent)
     }
-
-
 }

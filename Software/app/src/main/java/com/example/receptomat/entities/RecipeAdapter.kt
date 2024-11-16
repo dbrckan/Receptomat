@@ -1,9 +1,11 @@
 package com.example.receptomat.entities
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
@@ -15,6 +17,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
         private val recipeName: TextView = view.findViewById(R.id.tvNameRecipe)
         private val timeRecipe: TextView = view.findViewById(R.id.tvTimeRecipe)
         private val mealRecipe: TextView = view.findViewById(R.id.tvMeal)
+        private val ivOverflowMenu: ImageView = itemView.findViewById(R.id.ivOverflowMenu)
 
         fun bind(recipe: Recipe) {
             recipeName.text = recipe.name
@@ -35,8 +38,35 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
             itemView.setOnClickListener {
                 onItemClick(recipe)
             }
+            ivOverflowMenu.setOnClickListener {
+                showPopupMenu(it, recipe)
+            }
         }
     }
+    private fun showPopupMenu(view: View, recipe: Recipe) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_recipe, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.action_delete -> {
+                    true
+                }
+                R.id.action_edit -> {
+                    true
+                }
+                R.id.action_favorite -> {
+                    true
+                }
+                R.id.action_add_to_menu -> {
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_list_item, parent, false)
