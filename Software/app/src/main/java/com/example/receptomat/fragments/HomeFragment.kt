@@ -18,6 +18,7 @@ import com.example.receptomat.entities.RecipeAdapter
 import com.example.receptomat.helpers.MockDataLoader
 import com.example.receptomat.recipeManagement.AddNewRecipeActivity
 import com.example.receptomat.recipeManagement.DetailActivity
+import com.example.receptomat.recipeManagement.EditRecipeActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -26,7 +27,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: RecipeAdapter
     private val recipes = mutableListOf<Recipe>()
 
-    private lateinit var createRecipeResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var createRecipeLauncher: ActivityResultLauncher<Intent>
+    private lateinit var editRecipeLauncher: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,28 +46,42 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             },
             onDeleteClick = { recipe ->
                 showDeleteConfirmationDialog(recipe)
+            },
+            onEditClick = { recipe ->
+                editRecipe(recipe)
             }
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        createRecipeResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val newRecipe = result.data?.getParcelableExtra<Recipe>("NEW_RECIPE")
-                    if (newRecipe != null) {
-                        recipes.add(newRecipe)
-                        adapter.updateRecipes(recipes)
-                        adapter.notifyDataSetChanged()
+        createRecipeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val newRecipe = result.data?.getParcelableExtra<Recipe>("NEW_RECIPE")
+                if (newRecipe != null) {
+                    recipes.add(newRecipe)
+                    adapter.updateRecipes(recipes)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+        editRecipeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val updatedRecipe = result.data?.getParcelableExtra<Recipe>("UPDATED_RECIPE")
+                if (updatedRecipe != null) {
+                    val index = recipes.indexOfFirst { it.id == updatedRecipe.id }
+                    if (index != -1) {
+                        recipes[index] = updatedRecipe
+                        adapter.notifyItemChanged(index)
                     }
                 }
             }
+        }
 
-        val btnCreateRecipe =
-            view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
+        val btnCreateRecipe = view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
         btnCreateRecipe.setOnClickListener {
             val intent = Intent(requireContext(), AddNewRecipeActivity::class.java)
-            createRecipeResultLauncher.launch(intent)
+            createRecipeLauncher.launch(intent)
         }
     }
 
@@ -97,5 +113,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         adapter.updateRecipes(updatedRecipes)
         Toast.makeText(requireContext(), "Recept je obrisan.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun editRecipe(recipe: Recipe) {
+        val intent = Intent(requireContext(), EditRecipeActivity::class.java)
+        intent.putExtra("recipe", recipe)
+        editRecipeLauncher.launch(intent)
     }
 }

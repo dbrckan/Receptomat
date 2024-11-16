@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Receptomat"
         tools:targetApi="31">
         <activity
+            android:name=".recipeManagement.EditRecipeActivity"
+            android:exported="false" />
+        <activity
             android:name=".recipeManagement.AddNewRecipeActivity"
             android:exported="false"
             android:theme="@style/Theme.Receptomat" />

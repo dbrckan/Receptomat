@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 
-class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: (Recipe) -> Unit, private val onDeleteClick: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: (Recipe) -> Unit, private val onDeleteClick: (Recipe) -> Unit, private val onEditClick: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val recipeImage: ImageView = view.findViewById(R.id.ivPicture)
@@ -54,6 +54,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
                     true
                 }
                 R.id.action_edit -> {
+                    onEditClick(recipe)
                     true
                 }
                 R.id.action_favorite -> {

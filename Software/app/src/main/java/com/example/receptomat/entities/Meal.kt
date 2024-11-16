@@ -5,4 +5,10 @@ enum class Meal (val displayName: String) {
     LUNCH("Ručak"),
     DINNER("Večera"),
     DESSERT("Desert");
+
+    companion object {
+        fun fromDisplayName(displayName: String): Meal {
+            return values().firstOrNull { it.displayName == displayName } ?: BREAKFAST
+        }
+    }
 }
