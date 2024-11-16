@@ -16,6 +16,8 @@ import database.BazaKorisnika
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_register)
 
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnCancel = findViewById<Button>(R.id.btnCancel)
@@ -74,9 +76,8 @@ class RegisterActivity : AppCompatActivity() {
         }
 
 
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_register)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registerActivity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

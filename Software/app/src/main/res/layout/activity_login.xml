@@ -16,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pexels_valeriya_842571"
-        android:contentDescription="@string/image_description"/>
+        android:contentDescription="@string/image_description"
+        android:alpha="0.6"/>
 
     <TextView
         android:id="@+id/titleTextView"
@@ -72,6 +73,18 @@
         android:drawablePadding="6sp"
         android:autofillHints="password" />
 
+    <TextView
+        android:id="@+id/txtDontHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/dontHaveAccount"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/login_Button"
@@ -84,7 +97,7 @@
         android:paddingRight="40dp"
         android:textSize="16sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@id/txtDontHaveAccount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

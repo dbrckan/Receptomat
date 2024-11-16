@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         val odustaniButton = findViewById<Button>(R.id.cancel_Button)
         val etUsername = findViewById<EditText>(R.id.usernameEditText)
         val etPassword = findViewById<EditText>(R.id.passwordEditText)
+        val txtDontHaveAccount = findViewById<TextView>(R.id.txtDontHaveAccount)
 
         prijavaButton.setOnClickListener {
             val username = etUsername.text.toString()
@@ -39,6 +41,11 @@ class LoginActivity : AppCompatActivity() {
                 etPassword.setTextColor(Color.RED)
                 Toast.makeText(this, "Podaci nisu točni", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        txtDontHaveAccount.setOnClickListener {
+            val intent = Intent(baseContext, RegisterActivity::class.java)
+            startActivity(intent)
         }
 
         odustaniButton.setOnClickListener {

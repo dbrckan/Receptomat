@@ -6,6 +6,7 @@
     <string name="password_hint">Lozinka</string>
     <string name="login_button">Prijavi se</string>
     <string name="cancel_button">Odustani</string>
+    <string name="dontHaveAccount">Nemaš račun?</string>
     <string name="save_button">Spremi</string>
     <string name="name_hint">Ime i prezime\n</string>
     <string name="password_again_hint">Ponovno unesi lozinku</string>
