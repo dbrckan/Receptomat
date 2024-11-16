@@ -49,6 +49,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
         val recipe = recipes[position]
         holder.bind(recipe)
     }
-
-
+    fun updateRecipes(newRecipes: List<Recipe>) {
+        recipes = newRecipes
+        notifyDataSetChanged()
+    }
 }

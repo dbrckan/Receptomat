@@ -6,6 +6,7 @@
     <string name="password_hint">Lozinka</string>
     <string name="login_button">Prijavi se</string>
     <string name="cancel_button">Odustani</string>
+    <string name="save_button">Spremi</string>
     <string name="name_hint">Ime i prezime\n</string>
     <string name="password_again_hint">Ponovno unesi lozinku</string>
     <string name="registration_button">Registriraj se</string>
@@ -21,7 +22,7 @@
 
 
     <string name="recipe_name">Naziv recepta</string>
-    <string name="time">Brijeme pripreme</string>
+    <string name="time">Vrijeme pripreme</string>
     <string name="meal">Obrok</string>
     <string name="add_new_recipe">Dodaj novi recept</string>
     <string name="picture_description">Slika jela</string>
@@ -30,5 +31,8 @@
     <string name="description">Priprema</string>
     <string name="preparation_time">Vrijeme pripreme: %1$d minuta</string>
     <string name="date_added">Datum dodavanja: %1$s</string>
+
+    <string name="add_picture_description">Add a picture</string>
+
 
 </resources>

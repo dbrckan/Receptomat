@@ -13,6 +13,10 @@
         android:theme="@style/Theme.Receptomat"
         tools:targetApi="31">
         <activity
+            android:name=".recipeManagement.AddNewRecipeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Receptomat" />
+        <activity
             android:name=".recipeManagement.DetailActivity"
             android:exported="false"
             android:theme="@style/Theme.Receptomat" />
