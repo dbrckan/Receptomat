@@ -1,5 +1,6 @@
 package com.example.receptomat.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -9,6 +10,7 @@ import com.example.receptomat.R
 import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeAdapter
 import com.example.receptomat.helpers.MockDataLoader
+import com.example.receptomat.recipeManagement.DetailActivity
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -22,7 +24,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recipes.addAll(MockDataLoader.getDemoData())
 
         recyclerView = view.findViewById(R.id.rv_recipes)
-        adapter = RecipeAdapter(recipes)
+        adapter = RecipeAdapter(
+            recipes,
+            onItemClick = { selectedRecipe ->
+                val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                    putExtra("RECIPE_DATA", selectedRecipe)
+                }
+                startActivity(intent)
+            }
+        )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
     }

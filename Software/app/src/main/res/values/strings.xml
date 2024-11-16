@@ -13,17 +13,22 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="work_in_progress">Stanica je u izradi!</string>
-    <string name="description">Description</string>
     <string name="register">Registracija</string>
     <string name="email_hint">Email</string>
     <string name="Receptomat_caps_lock">RECEPTOMAT</string>
     <string name="welcome">Dobrodošli na</string>
     <string name="back_picture">Slika</string>
 
+
     <string name="recipe_name">Naziv recepta</string>
     <string name="time">Brijeme pripreme</string>
     <string name="meal">Obrok</string>
     <string name="add_new_recipe">Dodaj novi recept</string>
-    <string name="preparation_time"> %1$d minuta </string>
     <string name="picture_description">Slika jela</string>
+    <string name="pick_date">Odaberite datum</string>
+    <string name="ingridinets">Sastojci</string>
+    <string name="description">Priprema</string>
+    <string name="preparation_time">Vrijeme pripreme: %1$d minuta</string>
+    <string name="date_added">Datum dodavanja: %1$s</string>
+
 </resources>
