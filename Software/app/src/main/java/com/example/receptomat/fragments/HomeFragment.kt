@@ -41,25 +41,61 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     putExtra("RECIPE_DATA", selectedRecipe)
                 }
                 startActivity(intent)
+            },
+            onDeleteClick = { recipe ->
+                showDeleteConfirmationDialog(recipe)
             }
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        createRecipeResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val newRecipe = result.data?.getParcelableExtra<Recipe>("NEW_RECIPE")
-                if (newRecipe != null) {
-                    recipes.add(newRecipe)
-                    adapter.updateRecipes(recipes)
-                    adapter.notifyDataSetChanged()
+        createRecipeResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val newRecipe = result.data?.getParcelableExtra<Recipe>("NEW_RECIPE")
+                    if (newRecipe != null) {
+                        recipes.add(newRecipe)
+                        adapter.updateRecipes(recipes)
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
-        }
 
-        val btnCreateRecipe = view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
+        val btnCreateRecipe =
+            view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
         btnCreateRecipe.setOnClickListener {
             val intent = Intent(requireContext(), AddNewRecipeActivity::class.java)
             createRecipeResultLauncher.launch(intent)
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(recipe: Recipe) {
+        val context = requireContext()
+        val alertDialog = AlertDialog.Builder(context)
+            .setMessage("Jeste li sigurni da želite obrisati recept?")
+            .setPositiveButton("Obriši") { _, _ ->
+                deleteRecipe(recipe)
+            }
+            .setNegativeButton("Odustani", null)
+            .create()
+
+        alertDialog.setOnShowListener {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                ContextCompat.getColor(context, R.color.button_start_page_color)
+            )
+            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                ContextCompat.getColor(context, R.color.button_start_page_color)
+            )
+        }
+
+        alertDialog.show()
+    }
+
+    private fun deleteRecipe(recipe: Recipe) {
+        val updatedRecipes = MockDataLoader.getDemoData().toMutableList().apply {
+            remove(recipe)
+        }
+        adapter.updateRecipes(updatedRecipes)
+        Toast.makeText(requireContext(), "Recept je obrisan.", Toast.LENGTH_SHORT).show()
     }
 }
