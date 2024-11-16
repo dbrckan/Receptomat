@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.HomeFragment"
+    android:padding="13dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/work_in_progress"
-        android:gravity="center"
-        android:textSize="24sp"/>
+        android:layout_marginTop="80dp"/>
 
-</FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_home_fragment_crate_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="15dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_circle_24"
+        android:contentDescription="@string/add_new_recipe"
+        app:tint="@color/white"
+        app:backgroundTint="@color/button_start_page_color"
+        app:maxImageSize="35dp" />
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

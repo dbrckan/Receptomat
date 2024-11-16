@@ -19,4 +19,11 @@
     <string name="Receptomat_caps_lock">RECEPTOMAT</string>
     <string name="welcome">Dobrodošli na</string>
     <string name="back_picture">Slika</string>
+
+    <string name="recipe_name">Naziv recepta</string>
+    <string name="time">Brijeme pripreme</string>
+    <string name="meal">Obrok</string>
+    <string name="add_new_recipe">Dodaj novi recept</string>
+    <string name="preparation_time"> %1$d minuta </string>
+    <string name="picture_description">Slika jela</string>
 </resources>
