@@ -24,9 +24,6 @@
             android:exported="false"
             android:theme="@style/Theme.Receptomat" />
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
@@ -38,6 +35,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            />
+
         <activity
             android:name=".RecipesActivity"
             android:exported="false" />
