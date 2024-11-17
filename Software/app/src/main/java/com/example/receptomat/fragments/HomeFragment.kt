@@ -108,10 +108,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun deleteRecipe(recipe: Recipe) {
-        val updatedRecipes = MockDataLoader.getDemoData().toMutableList().apply {
-            remove(recipe)
-        }
-        adapter.updateRecipes(updatedRecipes)
+        recipes.remove(recipe)
+        adapter.updateRecipes(recipes)
         Toast.makeText(requireContext(), "Recept je obrisan.", Toast.LENGTH_SHORT).show()
     }
 

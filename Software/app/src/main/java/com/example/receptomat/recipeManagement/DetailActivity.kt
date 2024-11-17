@@ -35,22 +35,37 @@ class DetailActivity : AppCompatActivity() {
         if (selectedRecipe != null) {
             recipeNameTextView.text = selectedRecipe.name
             recipeMealTextView.text = selectedRecipe.meal.displayName
-            ingredientsTextView.text = selectedRecipe.ingredients.joinToString("\n") // Sastojci odvojeni novim redom
+            ingredientsTextView.text =
+                selectedRecipe.ingredients.joinToString("\n") // Sastojci odvojeni novim redom
             instructionsTextView.text = selectedRecipe.instructions
-            preparationTimeTextView.text = getString(R.string.preparation_time, selectedRecipe.preparationTime)
+            preparationTimeTextView.text =
+                getString(R.string.preparation_time, selectedRecipe.preparationTime)
             val sdf = SimpleDateFormat("dd.MM.yyyy", Locale("hr", "HR"))
             val formattedDate = sdf.format(selectedRecipe.dateOfAddition)
             dateTextView.text = getString(R.string.date_added, formattedDate)
 
             if (!selectedRecipe.picture.isNullOrEmpty()) {
-                val imageResId = resources.getIdentifier(selectedRecipe.picture, "drawable", packageName)
+                val imageResId =
+                    resources.getIdentifier(selectedRecipe.picture, "drawable", packageName)
                 if (imageResId != 0) {
                     recipeImageView.setImageResource(imageResId)
                 } else {
-                    recipeImageView.setImageResource(0)
+                    val unavailableImageResId =
+                        resources.getIdentifier("nedostupno", "drawable", packageName)
+                    if (unavailableImageResId != 0) {
+                        recipeImageView.setImageResource(unavailableImageResId)
+                    } else {
+                        recipeImageView.setImageResource(0)
+                    }
                 }
             } else {
-                recipeImageView.setImageResource(0)
+                val unavailableImageResId =
+                    resources.getIdentifier("nedostupno", "drawable", packageName)
+                if (unavailableImageResId != 0) {
+                    recipeImageView.setImageResource(unavailableImageResId)
+                } else {
+                    recipeImageView.setImageResource(0)
+                }
             }
         }
     }
