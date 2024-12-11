@@ -132,6 +132,7 @@
             android:background="@drawable/edit_text"
             android:paddingStart="16dp"/>
 
+        <!-- Button save -->
         <Button
             android:id="@+id/btn_save"
             android:layout_width="355dp"
@@ -143,6 +144,7 @@
             android:textColor="@color/white"
             android:gravity="center"/>
 
+        <!-- Button cancel -->
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="355dp"
