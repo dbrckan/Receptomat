@@ -1,14 +1,17 @@
 package database
 
-class BazaKorisnika {
+import java.io.Serializable
 
-    private val korisnici = mutableListOf(
-        Korisnik("Pero","Perić","Pero", "pp@gmail.com","1234"),
-        Korisnik( "Marko","Markić","Maka", "mm@gmail.com","1234"),
-        Korisnik("Ana","Anić","Ana", "aa@gmail.com","1234"),
-        Korisnik("Iva","Ivić","Iva", "ii@gmail.com","1234"),
-        Korisnik("Ivica","Ivić","IVKA", "pp@gmail.com","1234")
-    )
+object BazaKorisnika : Serializable{
+
+
+        private val korisnici = mutableListOf(
+            Korisnik("Pero", "Perić", "Pero", "pp@gmail.com", "1234"),
+            Korisnik("Marko", "Markić", "Maka", "mm@gmail.com", "1234"),
+            Korisnik("Ana", "Anić", "Ana", "aa@gmail.com", "1234"),
+            Korisnik("Iva", "Ivić", "Iva", "ii@gmail.com", "1234"),
+            Korisnik("Ivica", "Ivić", "IVKA", "pp@gmail.com", "1234")
+        )
 
     fun provjeriKorisnika(username: String, password: String): Boolean
     {
@@ -51,6 +54,6 @@ class BazaKorisnika {
         else false
     }
 
-    data class Korisnik(val ime: String, val prezime: String, val username: String, val email: String, val password: String)
+    data class Korisnik (val ime: String, val prezime: String, val username: String, val email: String, val password: String) : Serializable
 
 }

@@ -7,16 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import database.BazaKorisnika
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
         val btnRegister = findViewById<Button>(R.id.btnRegister)
@@ -24,63 +20,57 @@ class RegisterActivity : AppCompatActivity() {
         val txtHasAccount = findViewById<TextView>(R.id.txtHasAccount)
 
         btnRegister.setOnClickListener {
-            val intent = Intent(baseContext, LoginActivity::class.java)
-            startActivity(intent)
+            val txtName = findViewById<EditText>(R.id.txtName)
+            val txtUsername = findViewById<EditText>(R.id.txtUsername)
+            val txtEmail = findViewById<EditText>(R.id.txtEmail)
+            val txtPassword = findViewById<EditText>(R.id.txtPassword)
+            val txtConfirmPassword = findViewById<EditText>(R.id.txtConfirmPassword)
+
+            val result = BazaKorisnika.dodajKorisnika(
+                txtName.text.toString(),
+                txtUsername.text.toString(),
+                txtEmail.text.toString(),
+                txtPassword.text.toString(),
+                txtConfirmPassword.text.toString()
+            )
+
+            when (result) {
+                "Korisnik uspješno dodan" -> {
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    txtName.text.clear()
+                    txtUsername.text.clear()
+                    txtEmail.text.clear()
+                    txtPassword.text.clear()
+                    txtConfirmPassword.text.clear()
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+                "Korisnik već postoji u bazi" -> Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                "Korisničko ime nije ispravno" -> {
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    txtUsername.setTextColor(Color.RED)
+                }
+                "Email nije ispravan" -> {
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    txtEmail.setTextColor(Color.RED)
+                }
+                "Lozinke se ne podudaraju" -> {
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    txtPassword.setTextColor(Color.RED)
+                    txtConfirmPassword.setTextColor(Color.RED)
+                }
+            }
         }
 
         btnCancel.setOnClickListener {
-            val intent = Intent(baseContext, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
         txtHasAccount.setOnClickListener {
-            val intent = Intent(baseContext, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-        }
-
-        var txtName = findViewById<EditText>(R.id.txtName)
-        var txtUsername = findViewById<EditText>(R.id.txtUsername)
-        var txtEmail = findViewById<EditText>(R.id.txtEmail)
-        var txtPassword = findViewById<EditText>(R.id.txtPassword)
-        var txtConfirmPassword = findViewById<EditText>(R.id.txtConfirmPassword)
-
-        val userDatabase = BazaKorisnika()
-        val result = userDatabase.dodajKorisnika(txtName.text.toString(), txtUsername.text.toString(), txtEmail.text.toString(), txtPassword.text.toString(), txtConfirmPassword.text.toString())
-
-        if(result == "Korisnik uspješno dodan"){
-            Toast.makeText(this, "Korisnik uspješno dodan", Toast.LENGTH_SHORT).show()
-            txtName.text.clear()
-            txtUsername.text.clear()
-            txtEmail.text.clear()
-            txtPassword.text.clear()
-            txtConfirmPassword.text.clear()
-
-            val intent = Intent(baseContext, LoginActivity::class.java)
-            startActivity(intent)
-        }
-        else if(result == "Korisnik već postoji u bazi"){
-            Toast.makeText(this, "Korisnik već postoji u bazi", Toast.LENGTH_SHORT).show()
-        }
-        else if(result == "Korisničko ime nije ispravno"){
-            Toast.makeText(this, "Korisničko ime nije ispravno", Toast.LENGTH_SHORT).show()
-            txtUsername.setBackgroundColor(Color.RED)
-        }
-        else if(result == "Email nije ispravan"){
-            Toast.makeText(this, "Email nije ispravan", Toast.LENGTH_SHORT).show()
-            txtEmail.setBackgroundColor(Color.RED)
-        }
-        else if(result == "Lozinke se ne podudaraju"){
-            Toast.makeText(this, "Lozinke se ne podudaraju", Toast.LENGTH_SHORT).show()
-            txtPassword.setBackgroundColor(Color.RED)
-            txtConfirmPassword.setBackgroundColor(Color.RED)
-        }
-
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registerActivity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
         }
     }
 }
