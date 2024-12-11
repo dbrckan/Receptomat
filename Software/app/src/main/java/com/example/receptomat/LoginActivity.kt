@@ -3,12 +3,19 @@ package com.example.receptomat
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import database.ApiService
 import database.BazaKorisnika
+import database.LoginResponse
+import database.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,19 +28,6 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.passwordEditText)
         val txtDontHaveAccount = findViewById<TextView>(R.id.txtDontHaveAccount)
 
-        prijavaButton.setOnClickListener {
-            val username = etUsername.text.toString()
-            val password = etPassword.text.toString()
-
-            if (BazaKorisnika.provjeriKorisnika(username, password)) {
-                val intent = Intent(this, RecipesActivity::class.java)
-                startActivity(intent)
-            } else {
-                etUsername.setTextColor(Color.RED)
-                etPassword.setTextColor(Color.RED)
-                Toast.makeText(this, "Podaci nisu točni", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         txtDontHaveAccount.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -44,5 +38,48 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        prijavaButton.setOnClickListener {
+            val username = etUsername.text.toString()
+            val password = etPassword.text.toString()
+
+            if (username.isNotEmpty() && password.isNotEmpty()) {
+                loginUser(username, password)
+            } else {
+                Toast.makeText(this, "Molimo ispunite sva polja", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loginUser(username: String, password: String) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.loginUser(username, password)
+
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+
+                    if (loginResponse?.success == true) {
+
+                        Toast.makeText(this@LoginActivity, "Prijava uspješna", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, RecipesActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+
+                        Toast.makeText(this@LoginActivity, loginResponse?.error ?: "Pogrešno korisničko ime ili lozinka", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+
+                    Toast.makeText(this@LoginActivity, "Greška na serveru", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Toast.makeText(this@LoginActivity, "Greška: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 }
