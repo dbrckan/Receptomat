@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -78,7 +79,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-        val btnCreateRecipe = view.findViewById<FloatingActionButton>(R.id.fab_home_fragment_crate_recipe)
+        val btnCreateRecipe = view.findViewById<ImageButton>(R.id.ib_home_fragment_crate_recipe)
         btnCreateRecipe.setOnClickListener {
             val intent = Intent(requireContext(), AddNewRecipeActivity::class.java)
             createRecipeLauncher.launch(intent)

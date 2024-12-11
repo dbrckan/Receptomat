@@ -30,8 +30,8 @@
     <string name="pick_date">Odaberite datum</string>
     <string name="ingridinets">Sastojci</string>
     <string name="description">Priprema</string>
-    <string name="preparation_time">Vrijeme pripreme: %1$d minuta</string>
-    <string name="date_added">Datum dodavanja: %1$s</string>
+    <string name="preparation_time">%1$d minuta</string>
+    <string name="date_added">%1$s</string>
 
     <string name="add_picture_description">Add a picture</string>
 

@@ -11,25 +11,38 @@
         android:id="@+id/rv_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="top|end"
         android:layout_marginTop="80dp"/>
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_home_fragment_crate_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="15dp"
-        android:clickable="true"
-        android:src="@drawable/baseline_add_circle_24"
-        android:contentDescription="@string/add_new_recipe"
-        app:tint="@color/white"
-        app:backgroundTint="@color/button_start_page_color"
-        app:maxImageSize="35dp" />
-
     <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_recipe_search"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp" />
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edit_text">
+
+    </androidx.appcompat.widget.SearchView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/sv_recipe_search">
+
+        <ImageButton
+            android:id="@+id/ib_home_fragment_crate_recipe"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:contentDescription="@string/add_new_recipe"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_add_circle_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/button_start_page_color" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
