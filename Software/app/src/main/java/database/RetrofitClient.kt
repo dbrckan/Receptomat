@@ -1,5 +1,6 @@
 package database
 
+import com.google.gson.GsonBuilder
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -5,3 +5,7 @@ data class LoginResponse(
     val error: String?
 )
 
+data class RegisterResponse(
+    val success: Boolean?,
+    val error: String?
+)
