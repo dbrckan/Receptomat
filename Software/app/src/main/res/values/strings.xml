@@ -39,6 +39,7 @@
     <string name="update_recipe">Uredi recept</string>
     <string name="favorite">Dodaj recept u omiljeno</string>
     <string name="week_menu">Dodaj recept u tjedni meni</string>
+    <string name="favorites">Vaši najdraži recepti</string>
 
 
 </resources>

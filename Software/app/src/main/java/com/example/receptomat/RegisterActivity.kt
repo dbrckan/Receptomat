@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import database.ApiService
-import database.RegisterResponse
+import database.BasicResponse
 import database.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,8 +51,8 @@ class RegisterActivity : AppCompatActivity() {
             )
             val call = apiService.registerUser(registrationRequest)
 
-            call.enqueue(object : Callback<RegisterResponse> {
-                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+            call.enqueue(object : Callback<BasicResponse> {
+                override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                     if (response.isSuccessful) {
                         val registerResponse = response.body()
                         if (registerResponse?.success == true) {
@@ -74,7 +74,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                     Toast.makeText(this@RegisterActivity, "Greška sa mrežom: ${t.message}", Toast.LENGTH_SHORT).show()
                     Log.e("RegisterActivity mreža: ", "Poruka: ${t.message}")
                 }
