@@ -10,7 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 
-class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: (Recipe) -> Unit, private val onDeleteClick: (Recipe) -> Unit, private val onEditClick: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(
+    private var recipes: List<Recipe>,
+    private val onItemClick: (Recipe) -> Unit,
+    private val onDeleteClick: (Recipe) -> Unit,
+    private val onEditClick: (Recipe) -> Unit,
+    private val onFavoriteClick: (Recipe) -> Unit
+) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val recipeImage: ImageView = view.findViewById(R.id.ivPicture)
@@ -24,10 +30,10 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
             timeRecipe.text = itemView.context.getString(R.string.preparation_time, recipe.preparationTime)
             mealRecipe.text = recipe.meal.displayName
 
-            val imageResId = if (recipe.picture.isNullOrEmpty()) {
+            val imageResId = if (recipe.image_path.isNullOrEmpty()) {
                 R.drawable.nedostupno
             } else {
-                itemView.context.resources.getIdentifier(recipe.picture, "drawable", itemView.context.packageName)
+                itemView.context.resources.getIdentifier(recipe.image_path, "drawable", itemView.context.packageName)
             }
 
             if (imageResId != 0) {
@@ -43,6 +49,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
             }
         }
     }
+
     private fun showPopupMenu(view: View, recipe: Recipe) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(R.menu.menu_recipe, popupMenu.menu)
@@ -58,6 +65,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
                     true
                 }
                 R.id.action_favorite -> {
+                    onFavoriteClick(recipe)
                     true
                 }
                 R.id.action_add_to_menu -> {
@@ -68,7 +76,6 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
         }
         popupMenu.show()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_list_item, parent, false)
@@ -81,6 +88,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClick: 
         val recipe = recipes[position]
         holder.bind(recipe)
     }
+
     fun updateRecipes(newRecipes: List<Recipe>) {
         recipes = newRecipes
         notifyDataSetChanged()

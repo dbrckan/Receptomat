@@ -5,13 +5,13 @@ import android.os.Parcelable
 import java.util.Date
 
 data class Recipe(
-    val id: Int,
+    val recipe_id: Int,
     val name: String,
     val meal: Meal,
     val ingredients: List<String>,
     val instructions: String,
     val preparationTime: Int,
-    val picture: String? = null,
+    val image_path: String? = null,
     val dateOfAddition: Date = Date()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -26,13 +26,13 @@ data class Recipe(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeInt(recipe_id)
         parcel.writeString(name)
         parcel.writeSerializable(meal)
         parcel.writeStringList(ingredients)
         parcel.writeString(instructions)
         parcel.writeInt(preparationTime)
-        parcel.writeString(picture)
+        parcel.writeString(image_path)
         parcel.writeSerializable(dateOfAddition)
     }
 

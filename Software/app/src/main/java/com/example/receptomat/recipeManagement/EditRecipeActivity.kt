@@ -45,8 +45,8 @@ class EditRecipeActivity : AppCompatActivity() {
 
         timeEditText.setText(recipe.preparationTime.toString())
 
-        val imageResId = if (recipe.picture?.isNotEmpty() == true) {
-            resources.getIdentifier(recipe.picture, "drawable", packageName)
+        val imageResId = if (recipe.image_path?.isNotEmpty() == true) {
+            resources.getIdentifier(recipe.image_path, "drawable", packageName)
         } else {
             0
         }

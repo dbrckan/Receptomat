@@ -40,6 +40,7 @@
     <string name="favorite">Dodaj recept u omiljeno</string>
     <string name="week_menu">Dodaj recept u tjedni meni</string>
     <string name="favorites">Vaši najdraži recepti</string>
+    <string name="unknown_meal">Nepoznato jelo</string>
 
 
 </resources>

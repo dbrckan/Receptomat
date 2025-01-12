@@ -1,5 +1,4 @@
 package database
-import com.example.receptomat.entities.Recipe
 
 data class LoginResponse(
     val success: Boolean?,
@@ -13,5 +12,13 @@ data class BasicResponse(
 )
 
 data class FavoriteRecipesResponse(
-    val recipes: List<Recipe>
+    val recipes: List<RecipeResponse>
+)
+
+data class RecipeResponse(
+    val recipe_id: Int,
+    val name: String,
+    val meal: String,
+    val time: Int,
+    val image_path: String?
 )

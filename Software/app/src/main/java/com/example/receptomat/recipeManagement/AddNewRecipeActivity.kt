@@ -49,7 +49,7 @@ class AddNewRecipeActivity : AppCompatActivity() {
             val dateOfAddition = Date()
 
             val newRecipe = Recipe(
-                id = (0..1000).random(),
+                recipe_id = (0..1000).random(),
                 name = name,
                 meal = selectedMeal,
                 ingredients = ingredients,

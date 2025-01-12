@@ -44,9 +44,9 @@ class DetailActivity : AppCompatActivity() {
             val formattedDate = sdf.format(selectedRecipe.dateOfAddition)
             dateTextView.text = getString(R.string.date_added, formattedDate)
 
-            if (!selectedRecipe.picture.isNullOrEmpty()) {
+            if (!selectedRecipe.image_path.isNullOrEmpty()) {
                 val imageResId =
-                    resources.getIdentifier(selectedRecipe.picture, "drawable", packageName)
+                    resources.getIdentifier(selectedRecipe.image_path, "drawable", packageName)
                 if (imageResId != 0) {
                     recipeImageView.setImageResource(imageResId)
                 } else {

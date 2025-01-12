@@ -11,7 +11,7 @@ object MockDataLoader {
         recipes.addAll(
             listOf(
                 Recipe(
-                    id = 1,
+                    recipe_id = 1,
                     name = "Špageti bolonjez",
                     meal = Meal.LUNCH,
                     ingredients = listOf(
@@ -25,11 +25,11 @@ object MockDataLoader {
                     ),
                     instructions = "U velikoj tavi na maslinovom ulju propržite luk i češnjak. Dodajte mljeveno meso i pržite dok ne porumeni. Dodajte rajčice, začine i kuhajte još 30 minuta. Poslužite s kuhanim špagetama.",
                     preparationTime = 45,
-                    picture = "spaghetti_bolognese",
+                    image_path = "spaghetti_bolognese",
                     dateOfAddition = Date()
                 ),
                 Recipe(
-                    id = 2,
+                    recipe_id = 2,
                     name = "Palačinke",
                     meal = Meal.DESSERT,
                     ingredients = listOf(
@@ -42,11 +42,11 @@ object MockDataLoader {
                     ),
                     instructions = "Pomiješajte sve sastojke u glatku smjesu. Na vrućoj tavi s malo maslaca pržite palačinke dok ne postanu zlatne. Poslužite s omiljenim preljevom.",
                     preparationTime = 20,
-                    picture = "nedostupno",
+                    image_path = "nedostupno",
                     dateOfAddition = Date()
                 ),
                 Recipe(
-                    id = 3,
+                    recipe_id = 3,
                     name = "Salata s piletinom",
                     meal = Meal.DINNER,
                     ingredients = listOf(
@@ -60,7 +60,7 @@ object MockDataLoader {
                     ),
                     instructions = "Ispecite pileća prsa na maslinovom ulju. U međuvremenu, pomiješajte salatu, rajčicu i krastavac. Narezano pile poslužite na salati, prelijte s maslinovim uljem i octom.",
                     preparationTime = 30,
-                    picture = "chicken_salad",
+                    image_path = "chicken_salad",
                     dateOfAddition = Date()
                 )
             )
