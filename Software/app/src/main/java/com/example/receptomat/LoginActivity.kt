@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.receptomat.entities.UserViewModel
 import database.ApiService
 import database.LoginResponse
 import database.RetrofitClient
@@ -20,13 +19,9 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var userViewModel: UserViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         val prijavaButton = findViewById<Button>(R.id.login_Button)
         val odustaniButton = findViewById<Button>(R.id.cancel_Button)
