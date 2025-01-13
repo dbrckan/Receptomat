@@ -38,4 +38,22 @@ interface ApiService {
 
     @DELETE("receptomat/get_favorite_recipes.php")
     fun removeFavoriteRecipe(@Query("user_id") userId: Int, @Query("recipe_id") recipeId: Int): Call<BasicResponse>
+
+    @GET("receptomat/get_shopping_list_and_items.php")
+    fun getShoppingListsWithItems(@Query("user_id") userId: Int): Call<ShoppingListsWithItemsResponse>
+
+
+    @POST("receptomat/create_shopping_list_and_items.php")
+    fun createShoppingListWithItems(@Body request: AddShoppingListRequest): Call<BasicResponse>
+
+    @POST("receptomat/delete_items_from_shopping_list.php")
+    fun deleteItemFromList(@Body request: DeleteItemRequest): Call<BasicResponse>
+
+    @POST("receptomat/update_shopping_list.php")
+    fun updateShoppingList(@Body request: UpdateShoppingListRequest): Call<BasicResponse>
+
+    @POST("receptomat/delete_shopping_list.php")
+    fun deleteShoppingList(@Body request: DeleteListRequest): Call<BasicResponse>
+
+
 }
