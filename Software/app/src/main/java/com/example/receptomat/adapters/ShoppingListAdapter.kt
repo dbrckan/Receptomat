@@ -1,6 +1,7 @@
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
@@ -8,12 +9,14 @@ import database.ShoppingListWithItems
 
 class ShoppingListAdapter(
     private val shoppingLists: MutableList<ShoppingListWithItems>,
-    private val onListClick: (ShoppingListWithItems) -> Unit
+    private val onListClick: (ShoppingListWithItems) -> Unit,
+    private val onDeleteClick: (ShoppingListWithItems) -> Unit
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
     inner class ShoppingListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.textViewListName)
         val itemsTextView: TextView = view.findViewById(R.id.textViewItems)
+        val deleteButton: Button = view.findViewById(R.id.buttonDeleteList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
@@ -30,6 +33,8 @@ class ShoppingListAdapter(
         holder.itemView.setOnClickListener {
             onListClick(shoppingList)
         }
+
+        holder.deleteButton.setOnClickListener { onDeleteClick(shoppingList) }
 
     }
 

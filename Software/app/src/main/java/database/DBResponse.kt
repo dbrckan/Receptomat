@@ -51,3 +51,7 @@ data class UpdateShoppingListRequest(
     val items: List<String>
 )
 
+data class DeleteListRequest(
+    val list_id: Int
+)
+

@@ -16,6 +16,8 @@ import com.example.receptomat.R
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import database.ApiService
+import database.BasicResponse
+import database.DeleteListRequest
 import database.RetrofitClient
 import database.ShoppingListWithItems
 
@@ -36,9 +38,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         recyclerView = view.findViewById(R.id.recyclerViewShoppingLists)
         addButton = view.findViewById(R.id.fabAddList)
 
-        adapter = ShoppingListAdapter(mutableListOf()) { selectedList ->
-            openEditFragment(selectedList)
-        }
+        adapter = ShoppingListAdapter(
+            mutableListOf(),
+            { selectedList -> openEditFragment(selectedList) },
+            { selectedList -> deleteShoppingList(selectedList) }
+        )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
@@ -93,6 +97,25 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     }
 
 
+    private fun deleteShoppingList(selectedList: ShoppingListWithItems) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val request = DeleteListRequest(list_id = selectedList.list_id)
+
+        apiService.deleteShoppingList(request).enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(requireContext(), "List deleted successfully", Toast.LENGTH_SHORT).show()
+                    fetchShoppingLists()
+                } else {
+                    Toast.makeText(requireContext(), "Error deleting list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     private fun openEditFragment(selectedList: ShoppingListWithItems) {
         val fragment = EditShoppingListFragment().apply {

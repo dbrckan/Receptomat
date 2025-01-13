@@ -52,4 +52,8 @@ interface ApiService {
     @POST("receptomat/update_shopping_list.php")
     fun updateShoppingList(@Body request: UpdateShoppingListRequest): Call<BasicResponse>
 
+    @POST("receptomat/delete_shopping_list.php")
+    fun deleteShoppingList(@Body request: DeleteListRequest): Call<BasicResponse>
+
+
 }
