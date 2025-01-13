@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+
 import database.ApiService
 import database.LoginResponse
 import database.RetrofitClient
@@ -19,9 +20,13 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
 
         val prijavaButton = findViewById<Button>(R.id.login_Button)
         val odustaniButton = findViewById<Button>(R.id.cancel_Button)
