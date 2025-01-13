@@ -91,4 +91,11 @@ interface ApiService {
     @DELETE("receptomat/recipe_review.php")
     fun removeReview(@Query("user_id") userId: Int, @Query("recipe_id") recipeId: Int): Call<BasicResponse>
 
+    @GET("receptomat/get_user_profile.php")
+    fun getUserProfile(@Query("user_id") userId: Int): Call<UserProfileResponse>
+
+    @POST("receptomat/update_notifications.php")
+    fun updateNotifications(@Body request: UpdateNotificationsRequest): Call<BasicResponse>
+
+
 }

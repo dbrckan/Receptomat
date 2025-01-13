@@ -55,5 +55,16 @@ data class DeleteListRequest(
     val list_id: Int
 )
 
+data class UpdateNotificationsRequest(
+    val user_id: Int,
+    val notifications: Int
+)
+
+data class UserProfileResponse(
+    val success: Boolean,
+    val username: String,
+    val email: String,
+    val notifications: Int
+)
 
 
