@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.adapters.Item
 import com.example.receptomat.adapters.ItemAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import database.AddShoppingListRequest
 import database.ApiService
 import database.BasicResponse
@@ -34,6 +35,8 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val cartFragmentFab = requireActivity().findViewById<FloatingActionButton>(R.id.fabAddList)
+        cartFragmentFab?.visibility = View.GONE
 
         saveButton = view.findViewById(R.id.buttonSave)
         cancelButton = view.findViewById(R.id.buttonCancel)

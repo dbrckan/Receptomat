@@ -3,24 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F8E8E8">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:title="Shopping Lists"
-        android:titleTextColor="@android:color/white"
-        android:elevation="4dp" />
+        android:text="Shopping"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#C62828"
+        android:paddingBottom="16dp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewShoppingLists"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="8dp"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:clipToPadding="false"
         android:scrollbars="vertical" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddList"
@@ -29,6 +36,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
+        android:tint="@android:color/white"
+        android:backgroundTint="#C62828"
         android:contentDescription="Add New List" />
 
     <FrameLayout
@@ -36,6 +45,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
-
 </LinearLayout>
