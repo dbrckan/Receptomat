@@ -22,3 +22,4 @@ data class RecipeResponse(
     val time: Int,
     val image_path: String?
 )
+

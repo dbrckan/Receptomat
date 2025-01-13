@@ -13,4 +13,10 @@
         android:gravity="center"
         android:textSize="24sp"/>
 
+    <Button
+        android:id="@+id/button_view_reviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pregled vlastitih ocjena recepata" />
+
 </FrameLayout>
