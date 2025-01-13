@@ -1,6 +1,7 @@
 package com.example.receptomat.fragments
 
 import ShoppingListAdapter
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -54,12 +55,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onResume() {
         super.onResume()
+        fetchShoppingLists()
         view?.findViewById<FrameLayout>(R.id.fragment_container)?.visibility = View.GONE
     }
 
+
+
     private fun fetchShoppingLists() {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
-        apiService.getShoppingListsWithItems(userId = 1).enqueue(object : Callback<ShoppingListsWithItemsResponse> {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+        apiService.getShoppingListsWithItems(userId = userId).enqueue(object : Callback<ShoppingListsWithItemsResponse> {
             override fun onResponse(call: Call<ShoppingListsWithItemsResponse>, response: Response<ShoppingListsWithItemsResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val shoppingLists = response.body()?.shopping_lists ?: emptyList()
@@ -74,5 +80,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             }
         })
     }
+
 
 }

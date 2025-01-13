@@ -1,5 +1,6 @@
 package com.example.receptomat.fragments
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -71,24 +72,28 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
 
     private fun saveShoppingList(listName: String, itemNames: List<String>) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
-        val request = AddShoppingListRequest(list_name = listName, user_id = 1, items = itemNames)
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+        val request = AddShoppingListRequest(list_name = listName, user_id = userId, items = itemNames)
+
         apiService.createShoppingListWithItems(request).enqueue(object : Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     Toast.makeText(requireContext(), "List saved successfully", Toast.LENGTH_SHORT).show()
+
+
                     parentFragmentManager.popBackStack()
                 } else {
-                    val error = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(requireContext(), "Error saving list: $error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error saving list: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
 
             override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
 
 
 }
