@@ -64,6 +64,14 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 .addToBackStack(null)
                 .commit()
         }
+        parentFragmentManager.addOnBackStackChangedListener {
+            val currentFragment = parentFragmentManager.findFragmentById(R.id.fragment_container)
+            if (currentFragment is EditShoppingListFragment) {
+                hideFloatingActionButton()
+            } else {
+                showFloatingActionButton()
+            }
+        }
 
 
     }
@@ -74,6 +82,13 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         view?.findViewById<FrameLayout>(R.id.fragment_container)?.visibility = View.GONE
     }
 
+    private fun showFloatingActionButton() {
+        addButton.visibility = View.VISIBLE
+    }
+
+    private fun hideFloatingActionButton() {
+        addButton.visibility = View.GONE
+    }
 
 
     private fun fetchShoppingLists() {
@@ -132,7 +147,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             .addToBackStack(null)
             .commit()
 
-
+        hideFloatingActionButton()
 
     view?.findViewById<FrameLayout>(R.id.fragment_container)?.visibility = View.VISIBLE
     }
