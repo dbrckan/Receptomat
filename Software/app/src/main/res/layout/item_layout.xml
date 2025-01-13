@@ -20,6 +20,12 @@
             android:padding="8dp"
             android:textSize="16sp" />
 
+        <Button
+            android:id="@+id/buttonDeleteItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
     </LinearLayout>
 
 

@@ -45,4 +45,11 @@ interface ApiService {
 
     @POST("receptomat/create_shopping_list_and_items.php")
     fun createShoppingListWithItems(@Body request: AddShoppingListRequest): Call<BasicResponse>
+
+    @POST("receptomat/delete_items_from_shopping_list.php")
+    fun deleteItemFromList(@Body request: DeleteItemRequest): Call<BasicResponse>
+
+    @POST("receptomat/update_shopping_list.php")
+    fun updateShoppingList(@Body request: UpdateShoppingListRequest): Call<BasicResponse>
+
 }

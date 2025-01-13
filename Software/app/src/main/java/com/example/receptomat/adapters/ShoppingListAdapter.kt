@@ -7,7 +7,8 @@ import com.example.receptomat.R
 import database.ShoppingListWithItems
 
 class ShoppingListAdapter(
-    private val shoppingLists: MutableList<ShoppingListWithItems>
+    private val shoppingLists: MutableList<ShoppingListWithItems>,
+    private val onListClick: (ShoppingListWithItems) -> Unit
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
     inner class ShoppingListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -25,6 +26,11 @@ class ShoppingListAdapter(
         val shoppingList = shoppingLists[position]
         holder.nameTextView.text = shoppingList.list_name
         holder.itemsTextView.text = shoppingList.items.joinToString(", ")
+
+        holder.itemView.setOnClickListener {
+            onListClick(shoppingList)
+        }
+
     }
 
     override fun getItemCount(): Int = shoppingLists.size

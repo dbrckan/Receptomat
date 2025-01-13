@@ -17,6 +17,7 @@ import com.example.receptomat.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import database.ApiService
 import database.RetrofitClient
+import database.ShoppingListWithItems
 
 import database.ShoppingListsWithItemsResponse
 import retrofit2.Call
@@ -35,7 +36,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         recyclerView = view.findViewById(R.id.recyclerViewShoppingLists)
         addButton = view.findViewById(R.id.fabAddList)
 
-        adapter = ShoppingListAdapter(mutableListOf())
+        adapter = ShoppingListAdapter(mutableListOf()) { selectedList ->
+            openEditFragment(selectedList)
+        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
@@ -43,13 +46,21 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         addButton.setOnClickListener {
             val container = view?.findViewById<FrameLayout>(R.id.fragment_container)
-            container?.visibility = View.VISIBLE // Postavite na vidljivo
+            container?.visibility = View.VISIBLE
+
+
+            val fragment = EditShoppingListFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean("is_new", true)
+                }
+            }
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, EditShoppingListFragment())
+                .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit()
         }
+
 
     }
 
@@ -81,5 +92,26 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         })
     }
 
+
+
+    private fun openEditFragment(selectedList: ShoppingListWithItems) {
+        val fragment = EditShoppingListFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean("is_new", false)
+                putInt("list_id", selectedList.list_id)
+                putString("list_name", selectedList.list_name)
+                putStringArrayList("items", ArrayList(selectedList.items))
+            }
+        }
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+
+
+
+    view?.findViewById<FrameLayout>(R.id.fragment_container)?.visibility = View.VISIBLE
+    }
 
 }

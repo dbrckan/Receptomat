@@ -39,3 +39,15 @@ data class AddShoppingListRequest(
     val user_id: Int,
     val items: List<String>
 )
+
+data class DeleteItemRequest(
+    val item_id: Int,
+    val list_id: Int
+)
+
+data class UpdateShoppingListRequest(
+    val list_id: Int,
+    val list_name: String,
+    val items: List<String>
+)
+
