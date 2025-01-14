@@ -1,11 +1,16 @@
 package database
 
+import com.example.receptomat.entities.Category
+import com.example.receptomat.entities.Preference
+import com.example.receptomat.entities.Recipe
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import java.util.Date
 
 interface ApiService {
@@ -98,4 +103,48 @@ interface ApiService {
     fun updateNotifications(@Body request: UpdateNotificationsRequest): Call<BasicResponse>
 
 
+    /*upravljanje receptima*/
+    @GET("receptomat/get_categories.php")
+    fun getCategories(): Call<List<Category>>
+
+    @GET("receptomat/get_units.php")
+    fun getUnits(): Call<List<Unit>>
+
+    @FormUrlEncoded
+    @POST("receptomat/add_item_from_recipe.php")
+    fun addItem(
+        @Field("name") name: String,
+    ): Call<MessageResponse>
+
+
+    @GET("receptomat/get_preference.php")
+    fun getPreferences(): Call<List<Preference>>
+
+    @GET("receptomat/get_recipe.php")
+    fun getRecipes(): Call<List<Recipe>>
+
+
+    @FormUrlEncoded
+    @POST("receptomat/add_recipe.php")
+    fun addRecipe(
+        @Field("name") name: String,
+        @Field("description") description: String,
+        @Field("time") time: Int,
+        @Field("user_id") userId: Int,
+        @Field("category_id") categoryId: Int,
+        @Field("preference_id") preferenceId: Int
+    ): Call<MessageResponse>
+
+    @POST("receptomat/delete_recipe.php")
+    @FormUrlEncoded
+    fun deleteRecipe(@Field("recipe_id") recipeId: Int): Call<MessageResponse>
+
+    @FormUrlEncoded
+    @POST("receptomat/add_recipe_item.php")
+    fun linkItemToRecipe(
+        @Field("recipe_id") recipeId: Int,
+        @Field("item_name") itemName: String,
+        @Field("quantity") quantity: Float,
+        @Field("unit_id") unitId: Int
+    ): Call<MessageResponse>
 }
