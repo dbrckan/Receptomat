@@ -1,5 +1,7 @@
 package database
 
+import com.example.receptomat.entities.Ingredient
+
 data class LoginResponse(
     val success: Boolean?,
     val user_id: Int?,
@@ -65,6 +67,29 @@ data class UserProfileResponse(
     val username: String,
     val email: String,
     val notifications: Int
+)
+
+data class RecipeRequest(
+    val recipe_id: Int,
+    val name: String,
+    val description: String,
+    val time: Int,
+    val user_id: Int,
+    val category_id: Int,
+    val preference_id: Int,
+    val ingredients: List<Ingredient>?
+)
+
+data class RecipeResponseAdd(
+    val success: Boolean,
+    val data: RecipeRequest?
+)
+
+data class MessageResponse(
+    var success: Boolean,
+    val message: String,
+    val recipe_id: Int?,
+    val item_id: Int?
 )
 
 

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.entities.Recipe
-import com.example.receptomat.entities.RecipeAdapter
+import com.example.receptomat.adapters.RecipeAdapter
 import com.example.receptomat.helpers.MockDataLoader
 import com.example.receptomat.recipeManagement.AddNewRecipeActivity
 import com.example.receptomat.recipeManagement.DetailActivity

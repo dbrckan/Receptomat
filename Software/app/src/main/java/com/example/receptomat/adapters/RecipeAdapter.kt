@@ -1,4 +1,4 @@
-package com.example.receptomat.entities
+package com.example.receptomat.adapters
 
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,6 +9,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
+import com.example.receptomat.entities.Recipe
 
 class RecipeAdapter(
     private var recipes: List<Recipe>,
