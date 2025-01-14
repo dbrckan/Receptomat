@@ -125,7 +125,6 @@ interface ApiService {
     @GET("receptomat/get_recipe.php")
     fun getRecipes(): Call<List<RecipeDB>>
 
-
     @FormUrlEncoded
     @POST("receptomat/add_recipe.php")
     fun addRecipe(
