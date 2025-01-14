@@ -61,7 +61,7 @@
                     app:tint="@color/black" />
 
                 <TextView
-                    android:id="@+id/tvMeal"
+                    android:id="@+id/tvCategoryRecipe"
                     android:layout_width="108dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="8dp"

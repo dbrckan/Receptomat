@@ -1,4 +1,4 @@
-package com.example.receptomat.adapters
+package com.example.receptomat.entities
 
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,49 +9,41 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
-import com.example.receptomat.entities.Recipe
+import kotlin.Unit
 
 class RecipeAdapter(
-    private var recipes: List<Recipe>,
-    private val onItemClick: (Recipe) -> Unit,
-    private val onDeleteClick: (Recipe) -> Unit,
-    private val onEditClick: (Recipe) -> Unit,
-    private val onFavoriteClick: (Recipe) -> Unit
+    private var recipes: List<RecipeDB>,
+    private val onItemClick: (RecipeDB) -> Unit,
+    private val onDeleteClick: (RecipeDB) -> Unit,
+    private val onEditClick: (RecipeDB) -> Unit,
+    private val categories: List<Category>
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val recipeImage: ImageView = view.findViewById(R.id.ivPicture)
         private val recipeName: TextView = view.findViewById(R.id.tvNameRecipe)
         private val timeRecipe: TextView = view.findViewById(R.id.tvTimeRecipe)
-        private val mealRecipe: TextView = view.findViewById(R.id.tvMeal)
         private val ivOverflowMenu: ImageView = itemView.findViewById(R.id.ivOverflowMenu)
+        private val categoryRecipe: TextView = view.findViewById(R.id.tvCategoryRecipe) // Ovdje se koristi TextView za prikaz kategorije
 
-        fun bind(recipe: Recipe) {
+        fun bind(recipe: RecipeDB) {
             recipeName.text = recipe.name
-            timeRecipe.text = itemView.context.getString(R.string.preparation_time, recipe.preparationTime)
-            mealRecipe.text = recipe.meal.displayName
+            timeRecipe.text = itemView.context.getString(R.string.preparation_time, recipe.time)
 
-            val imageResId = if (recipe.image_path.isNullOrEmpty()) {
-                R.drawable.nedostupno
-            } else {
-                itemView.context.resources.getIdentifier(recipe.image_path, "drawable", itemView.context.packageName)
-            }
+            val category = categories.find { it.category_id == recipe.category_id }
+            categoryRecipe.text = category?.name ?: "Nepoznato"
 
-            if (imageResId != 0) {
-                recipeImage.setImageResource(imageResId)
-            } else {
-                recipeImage.setImageResource(0)
-            }
-            itemView.setOnClickListener {
-                onItemClick(recipe)
-            }
             ivOverflowMenu.setOnClickListener {
                 showPopupMenu(it, recipe)
+            }
+
+            itemView.setOnClickListener {
+                onItemClick(recipe)
             }
         }
     }
 
-    private fun showPopupMenu(view: View, recipe: Recipe) {
+    private fun showPopupMenu(view: View, recipe: RecipeDB) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(R.menu.menu_recipe, popupMenu.menu)
 
@@ -66,7 +58,6 @@ class RecipeAdapter(
                     true
                 }
                 R.id.action_favorite -> {
-                    onFavoriteClick(recipe)
                     true
                 }
                 R.id.action_add_to_menu -> {
@@ -78,6 +69,7 @@ class RecipeAdapter(
         popupMenu.show()
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_list_item, parent, false)
         return RecipeViewHolder(view)
@@ -88,10 +80,5 @@ class RecipeAdapter(
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         holder.bind(recipe)
-    }
-
-    fun updateRecipes(newRecipes: List<Recipe>) {
-        recipes = newRecipes
-        notifyDataSetChanged()
     }
 }

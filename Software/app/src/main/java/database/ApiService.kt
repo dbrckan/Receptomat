@@ -3,6 +3,8 @@ package database
 import com.example.receptomat.entities.Category
 import com.example.receptomat.entities.Preference
 import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.RecipeDB
+import com.example.receptomat.entities.Units
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -108,7 +110,7 @@ interface ApiService {
     fun getCategories(): Call<List<Category>>
 
     @GET("receptomat/get_units.php")
-    fun getUnits(): Call<List<Unit>>
+    fun getUnits(): Call<List<Units>>
 
     @FormUrlEncoded
     @POST("receptomat/add_item_from_recipe.php")
@@ -121,7 +123,7 @@ interface ApiService {
     fun getPreferences(): Call<List<Preference>>
 
     @GET("receptomat/get_recipe.php")
-    fun getRecipes(): Call<List<Recipe>>
+    fun getRecipes(): Call<List<RecipeDB>>
 
 
     @FormUrlEncoded
