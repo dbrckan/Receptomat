@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="start|center_vertical"
-                android:text="@string/recipe_name"
+                android:text="@string/name_ingredient"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 

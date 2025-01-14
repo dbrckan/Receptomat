@@ -16,6 +16,17 @@
         android:paddingBottom="16dp">
 
         <ImageView
+            android:id="@+id/btn_back"
+            android:text="@string/recipe_name"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/baseline_arrow_back_ios_24"
+            android:clickable="true"
+            android:onClick="onBackPressed" />
+
+        <ImageView
             android:id="@+id/imgv_recipe"
             android:layout_width="250dp"
             android:layout_height="200dp"
@@ -50,11 +61,11 @@
                 app:tint="@color/black"/>
 
             <TextView
-                android:id="@+id/tv_meal"
+                android:id="@+id/tv_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/meal"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 android:textColor="@color/black"
                 android:layout_marginStart="8dp"
@@ -72,8 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/preparation_time"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="@color/black" />
+
 
         </LinearLayout>
 
@@ -87,15 +99,51 @@
             android:textColor="@color/black"
             android:layout_marginBottom="6dp" />
 
-        <TextView
-            android:id="@+id/tv_ingredients"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ingredients"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginBottom="12dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="17sp"
+                android:gravity="start|center_vertical"
+                android:text="@string/name_ingredient"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="17sp"
+                android:text="@string/amount"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="17sp"
+                android:text="@string/unit_of_measurement"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ingredientsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tv_recipe_description"
@@ -113,20 +161,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/description"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:lineSpacingExtra="6dp"
             android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_added"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/tv_preference"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/preference"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tv_preference_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/preference"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="6dp" />
+        </LinearLayout>
+
 
     </LinearLayout>
 
