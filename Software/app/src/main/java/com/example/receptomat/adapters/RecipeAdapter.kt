@@ -1,5 +1,6 @@
 package com.example.receptomat.entities
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
+import com.example.receptomat.recipeManagement.DetailActivity
 import kotlin.Unit
 
 class RecipeAdapter(
@@ -39,7 +41,9 @@ class RecipeAdapter(
             }
 
             itemView.setOnClickListener {
-                onItemClick(recipe)
+                val intent = Intent(itemView.context, DetailActivity::class.java)
+                intent.putExtra("RECIPE_ID", recipe.recipe_id ?: -1)
+                itemView.context.startActivity(intent)
             }
         }
     }

@@ -84,6 +84,7 @@ data class RecipeRequest(
 
 data class RecipeResponseAdd(
     val success: Boolean,
+    val message: String?,
     val data: RecipeRequest?
 )
 
