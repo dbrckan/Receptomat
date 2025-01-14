@@ -1,6 +1,7 @@
 package com.example.receptomat.fragments
 
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.receptomat.R
+import com.example.receptomat.ReviewsActivity
 import database.ApiService
 import database.BasicResponse
 import database.RetrofitClient
@@ -39,8 +41,11 @@ class ProfileFragment : Fragment() {
 
         val buttonViewReviews = view.findViewById<Button>(R.id.button_view_reviews)
         buttonViewReviews.setOnClickListener {
-            Toast.makeText(requireContext(), "View Reviews clicked!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, ReviewsActivity::class.java)
+            startActivity(intent)
         }
+
+
 
 
         fetchUserProfile()
