@@ -16,6 +16,7 @@ class RecipeAdapter(
     private val onItemClick: (RecipeDB) -> Unit,
     private val onDeleteClick: (RecipeDB) -> Unit,
     private val onEditClick: (RecipeDB) -> Unit,
+    private val onFavoriteClick: (RecipeDB) -> Unit,
     private val categories: List<Category>
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
@@ -61,6 +62,10 @@ class RecipeAdapter(
                     true
                 }
                 R.id.action_add_to_menu -> {
+                    true
+                }
+                R.id.action_favorite -> {
+                    onFavoriteClick(recipe)
                     true
                 }
                 else -> false

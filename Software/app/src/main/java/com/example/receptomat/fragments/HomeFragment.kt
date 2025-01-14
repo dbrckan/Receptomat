@@ -2,8 +2,10 @@ package com.example.receptomat.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageButton
@@ -15,12 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.entities.Category
+import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeAdapter
 import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.recipeManagement.AddNewRecipeActivity
 import com.example.receptomat.recipeManagement.DetailActivity
 import com.example.receptomat.recipeManagement.EditRecipeActivity
 import database.ApiService
+import database.BasicResponse
 import database.MessageResponse
 import database.RetrofitClient
 import retrofit2.Response
@@ -56,6 +60,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             onEditClick = { recipe ->
                 editRecipe(recipe)
                 true
+            },
+            onFavoriteClick = { recipe ->
+                addToFavorites(recipe)
             },
             categories
         )
@@ -205,4 +212,65 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         editRecipeLauncher.launch(intent)
     }
 
-}
+    private fun addToFavorites(recipe: RecipeDB) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+        if (userId != -1) {
+            if (recipe.recipe_id != null) {
+                val request = ApiService.AddFavoriteRecipeRequest(userId, recipe.recipe_id)
+                val call = apiService.addFavoriteRecipe(request)
+                call.enqueue(object : Callback<BasicResponse> {
+                    override fun onResponse(
+                        call: Call<BasicResponse>,
+                        response: Response<BasicResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val basicResponse = response.body()
+                            if (basicResponse?.success == true) {
+                                Toast.makeText(
+                                    context,
+                                    "Recept dodan u favorite",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                val errorMessage = basicResponse?.error
+                                    ?: "Neuspješno dodavanje recepta u favorite"
+                                Toast.makeText(context, "Greška: $errorMessage", Toast.LENGTH_SHORT)
+                                    .show()
+                                Log.e(
+                                    "HomeFragment",
+                                    "Greška prilikom dodavanja recepta: $errorMessage"
+                                )
+                            }
+                        } else {
+                            val errorMessage = response.errorBody()?.string()
+                                ?: "Neuspješno dodavanje recepta u favorite"
+                            Toast.makeText(context, "Greška: $errorMessage", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.e(
+                                "HomeFragment",
+                                "Greška prilikom dodavanja recepta: $errorMessage"
+                            )
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                        Toast.makeText(
+                            context,
+                            "Error adding recipe to favorites: ${t.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("HomeFragment", "Error adding recipe to favorites: ${t.message}")
+                        t.printStackTrace()
+                    }
+                })
+            } else {
+                Toast.makeText(context, "User ID is null", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
+    }
