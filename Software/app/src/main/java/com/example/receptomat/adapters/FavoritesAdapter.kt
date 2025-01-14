@@ -1,6 +1,6 @@
-// FavoritesAdapter.kt
 package com.example.receptomat.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,15 +30,16 @@ class FavoritesAdapter(
 
             val imageResId = if (recipe.image_path.isNullOrEmpty()) {
                 R.drawable.nedostupno
-            } else {
-                itemView.context.resources.getIdentifier(recipe.image_path, "drawable", itemView.context.packageName)
+            } else{
+
+                val resId = itemView.context.resources.getIdentifier(recipe.image_path, "drawable", itemView.context.packageName)
+                if (resId != 0) resId else {
+                    Log.e("FavoritesAdapter", "Invalid image path: ${recipe.image_path}")
+                    R.drawable.nedostupno
+                }
             }
 
-            if (imageResId != 0) {
-                recipeImage.setImageResource(imageResId)
-            } else {
-                recipeImage.setImageResource(R.drawable.nedostupno)
-            }
+            recipeImage.setImageResource(imageResId)
 
             removeButton.setOnClickListener {
                 onRemoveClick(recipe)

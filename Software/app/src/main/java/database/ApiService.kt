@@ -44,7 +44,8 @@ interface ApiService {
 
     data class ReviewsResponse(
         val success: Boolean,
-        val reviews: List<Review>
+        val reviews: List<Review>,
+        val recipes: List<Recipe>
     )
 
     data class Review(

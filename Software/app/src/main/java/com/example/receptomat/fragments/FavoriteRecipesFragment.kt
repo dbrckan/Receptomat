@@ -64,7 +64,7 @@ class FavoriteRecipesFragment : Fragment() {
             override fun onResponse(call: Call<FavoriteRecipesResponse>, response: Response<FavoriteRecipesResponse>) {
                 if (response.isSuccessful) {
                     val recipesResponse = response.body()
-                    if (recipesResponse != null) {
+                    if (recipesResponse != null && !recipesResponse.recipes.isNullOrEmpty()) {
                         Log.d("FavoriteRecipesFragment", "Primljeni recepti: ${recipesResponse.recipes}")
                         favoriteRecipes.clear()
                         favoriteRecipes.addAll(recipesResponse.recipes.map { recipe ->

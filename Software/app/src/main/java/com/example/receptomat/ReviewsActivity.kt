@@ -7,18 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.adapters.ReviewsAdapter
+import com.example.receptomat.entities.Meal
+import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.Review
 import database.ApiService
 import database.BasicResponse
 import database.RetrofitClient
+import com.example.receptomat.entities.ReviewsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Date
 
 class ReviewsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReviewsAdapter
     private val userReviews = mutableListOf<Review>()
+    private val recepies = mutableListOf<Recipe>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,7 @@ class ReviewsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewReviews)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = ReviewsAdapter(userReviews) { review -> removeReview(review) }
+        adapter = ReviewsAdapter(userReviews, recepies) { review -> removeReview(review) }
         recyclerView.adapter = adapter
 
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -48,7 +53,7 @@ class ReviewsActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ApiService.ReviewsResponse>, response: Response<ApiService.ReviewsResponse>) {
                 if (response.isSuccessful) {
                     val reviewsResponse = response.body()
-                    if (reviewsResponse != null) {
+                    if (reviewsResponse != null && !reviewsResponse.reviews.isNullOrEmpty()) {
                         userReviews.clear()
                         userReviews.addAll(reviewsResponse.reviews.map { apiReview ->
                             Review(
@@ -59,6 +64,21 @@ class ReviewsActivity : AppCompatActivity() {
                                 recipe_id = apiReview.recipe_id
                             )
                         })
+
+                        recepies.clear()
+                        recepies.addAll(reviewsResponse.recipes.map { recipe ->
+                            Recipe(
+                                recipe_id = recipe.recipe_id,
+                                name = recipe.name,
+                                meal = recipe.meal?.let { Meal.fromDisplayName(it.displayName) } ?: Meal.BREAKFAST,
+                                ingredients = emptyList(),
+                                instructions = "",
+                                preparationTime = recipe.preparationTime,
+                                image_path = recipe.image_path,
+                                dateOfAddition = Date()
+                            )
+                        })
+
                         adapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(this@ReviewsActivity, "Nema pronađenih recenzija", Toast.LENGTH_SHORT).show()

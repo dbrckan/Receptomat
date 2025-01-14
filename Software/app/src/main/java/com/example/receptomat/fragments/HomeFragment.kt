@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.entities.Category
+import com.example.receptomat.entities.Meal
 import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeAdapter
 import com.example.receptomat.entities.RecipeDB
@@ -30,6 +31,7 @@ import database.RetrofitClient
 import retrofit2.Response
 import retrofit2.Call
 import retrofit2.Callback
+import java.util.Date
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -61,8 +63,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 editRecipe(recipe)
                 true
             },
-            onFavoriteClick = { recipe ->
+            onFavoriteClick = { recipeDB ->
+                val recipe = Recipe(
+                    recipe_id = recipeDB.recipe_id ?: 0,
+                    name = recipeDB.name,
+                    meal = Meal.BREAKFAST, // Default value, adjust as needed
+                    ingredients = emptyList(), // Default value
+                    instructions = "", // Default value
+                    preparationTime = recipeDB.time,
+                    image_path = null, // Default value
+                    dateOfAddition = Date() // Default value
+                )
                 addToFavorites(recipe)
+                true
             },
             categories
         )
@@ -212,7 +225,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         editRecipeLauncher.launch(intent)
     }
 
-    private fun addToFavorites(recipe: RecipeDB) {
+    private fun addToFavorites(recipe: Recipe) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)
