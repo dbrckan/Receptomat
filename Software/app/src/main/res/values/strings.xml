@@ -23,15 +23,18 @@
 
 
     <string name="recipe_name">Naziv recepta</string>
-    <string name="time">Vrijeme pripreme</string>
+    <string name="time">Vrijeme pripreme (u minutama)</string>
     <string name="meal">Obrok</string>
+    <string name="preference">Preferencija</string>
     <string name="add_new_recipe">Dodaj novi recept</string>
     <string name="picture_description">Slika jela</string>
     <string name="pick_date">Odaberite datum</string>
-    <string name="ingridinets">Sastojci</string>
+    <string name="ingredients">Sastojci</string>
     <string name="description">Priprema</string>
     <string name="preparation_time">%1$d minuta</string>
     <string name="date_added">%1$s</string>
+    <string name="unit_of_measurement">Mj.jd.</string>
+    <string name="amount">Količina</string>
 
     <string name="add_picture_description">Add a picture</string>
 

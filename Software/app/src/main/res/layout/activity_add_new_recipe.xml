@@ -65,28 +65,82 @@
             android:padding="10dp"
             android:textColor="@color/black" />
 
-        <!-- Ingredients Section -->
-        <TextView
-            android:id="@+id/tv_ingredients"
-            android:layout_width="wrap_content"
+        <!-- Add Ingredient Button in the same line as Ingredients -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingTop="8dp"
-            android:text="@string/ingridinets"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/et_recipe_ingredients"
-            android:layout_width="355dp"
-            android:layout_height="match_parent"
-            android:hint="@string/ingridinets"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:maxLines="100"
-            android:textColor="@color/black"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/edit_text"
-            android:paddingStart="16dp"/>
+            <!-- TextView for "Sastojci" aligned to the left -->
+            <TextView
+                android:id="@+id/tv_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ingredients"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:paddingEnd="8dp" />
+
+            <!-- Button for adding ingredient, aligned to the right -->
+            <Button
+                android:id="@+id/btn_add_ingredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="18sp"
+                android:textColor="@color/button_start_page_color"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:minWidth="32dp"
+                android:minHeight="32dp"
+                android:backgroundTint="@android:color/transparent"
+                android:padding="6dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start|center_vertical"
+                android:text="@string/recipe_name"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/amount"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/unit_of_measurement"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <!-- Dynamically added ingredient fields will go here -->
+        <LinearLayout
+            android:id="@+id/ingredientContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
         <!-- Recipe Description -->
         <TextView
@@ -131,6 +185,24 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/edit_text"
             android:paddingStart="16dp"/>
+
+        <TextView
+            android:id="@+id/tvPreference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/preference"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <Spinner
+            android:id="@+id/spinner_preference"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/edit_text"
+            android:padding="10dp"
+            android:textColor="@color/black" />
 
         <!-- Button save -->
         <Button

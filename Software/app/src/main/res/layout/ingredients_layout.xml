@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="8dp">
+
+    <EditText
+        android:id="@+id/et_ingredient_name"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="Naziv"
+        android:inputType="text"
+        android:padding="8dp"
+        android:background="@drawable/edit_text"
+        android:textColor="@color/black" />
+
+    <!-- Ingredient Quantity -->
+    <EditText
+        android:id="@+id/et_ingredient_quantity"
+        android:layout_width="15dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Količina"
+        android:inputType="numberDecimal"
+        android:padding="8dp"
+        android:background="@drawable/edit_text"
+        android:textColor="@color/black" />
+
+    <!-- Unit of Measurement -->
+    <Spinner
+        android:id="@+id/spinner_unit"
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/edit_text"
+        android:padding="8dp"/>
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/btn_remove_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textSize="16sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center_vertical"
+        android:minWidth="32dp"
+        android:minHeight="32dp"
+        android:backgroundTint="@android:color/transparent"
+        android:padding="6dp"/>
+</LinearLayout>
