@@ -6,6 +6,7 @@ import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.entities.Units
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -119,7 +120,6 @@ interface ApiService {
         @Field("name") name: String,
     ): Call<MessageResponse>
 
-
     @GET("receptomat/get_preference.php")
     fun getPreferences(): Call<List<Preference>>
 
@@ -149,4 +149,8 @@ interface ApiService {
         @Field("quantity") quantity: Float,
         @Field("unit_id") unitId: Int
     ): Call<MessageResponse>
+
+    @GET("receptomat/get_recipe_by_id.php")
+    suspend fun getRecipeById(@Query("recipe_id") recipeId: Int): Response<RecipeResponseAdd>
+
 }

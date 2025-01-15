@@ -76,12 +76,15 @@ data class RecipeRequest(
     val time: Int,
     val user_id: Int,
     val category_id: Int,
+    val category_name: String?,
     val preference_id: Int,
+    val preference_name: String?,
     val ingredients: List<Ingredient>?
 )
 
 data class RecipeResponseAdd(
     val success: Boolean,
+    val message: String?,
     val data: RecipeRequest?
 )
 

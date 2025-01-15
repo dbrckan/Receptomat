@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="4dp">
+
+    <TextView
+        android:id="@+id/tv_ingredient_name"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_margin="15px"
+        android:gravity="start|center_vertical"
+        android:text="Name"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_quantity"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:text="Quantity"
+        android:layout_margin="15px"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Unit"
+        android:textSize="16sp"
+        android:layout_margin="15px"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/black" />
+</LinearLayout>
