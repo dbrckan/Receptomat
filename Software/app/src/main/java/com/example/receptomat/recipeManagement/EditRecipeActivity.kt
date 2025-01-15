@@ -1,152 +1,370 @@
 package com.example.receptomat.recipeManagement
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.receptomat.R
-import com.example.receptomat.entities.Meal
-import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.Category
+import com.example.receptomat.entities.Ingredient
+import com.example.receptomat.entities.Preference
+import com.example.receptomat.entities.Units
+import database.ApiService
+import database.RecipeRequest
+import database.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EditRecipeActivity : AppCompatActivity() {
+
     private lateinit var recipeNameEditText: EditText
-    private lateinit var recipeImageView: ImageView
-    private lateinit var ingredientsEditText: EditText
     private lateinit var instructionsEditText: EditText
     private lateinit var timeEditText: EditText
-    private lateinit var saveButton: Button
-    private lateinit var cancelButton: Button
-    private lateinit var recipe: Recipe
-    private lateinit var mealTypeSpinner: Spinner
+    private var categoriesList: List<Category> = emptyList()
+    private var preferencesList: List<Preference> = emptyList()
     private lateinit var ingredientContainer: LinearLayout
-    private lateinit var addIngredientButton: Button
+    private lateinit var categorySpinner: Spinner
+    private lateinit var preferenceSpinner: Spinner
+    private var selectedCategoryId: Int? = null
+    private var selectedPreferenceId: Int? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_recipe)
+        setContentView(R.layout.activity_add_new_recipe)
 
-        // Find views
         recipeNameEditText = findViewById(R.id.et_recipe_name)
-        recipeImageView = findViewById(R.id.recipeImageView)
         instructionsEditText = findViewById(R.id.et_recipe_instructions)
         timeEditText = findViewById(R.id.et_recipe_preparation_time)
-        saveButton = findViewById(R.id.btn_save)
-        cancelButton = findViewById(R.id.btn_cancel)
-        mealTypeSpinner = findViewById(R.id.spinner_meal_type)
         ingredientContainer = findViewById(R.id.ingredientContainer)
-        addIngredientButton = findViewById(R.id.btn_add_ingredient)
+        categorySpinner = findViewById(R.id.spinner_meal_type)
+        preferenceSpinner = findViewById(R.id.spinner_preference)
 
-        // Get recipe data
-        recipe = intent.getParcelableExtra("recipe") ?: return
+        setupAddIngredientButton()
 
-        // Populate views with existing recipe data
-        recipeNameEditText.setText(recipe.name)
-        instructionsEditText.setText(recipe.instructions)
-        timeEditText.setText(recipe.preparationTime.toString())
+        val recipeId = intent.getIntExtra("recipe_id", -1)
+        Log.d("EditRecipe", "Recipe id ${recipeId}")
 
-        // Set meal type in spinner
-        val mealTypes = Meal.values().map { it.displayName }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mealTypes)
-        mealTypeSpinner.adapter = adapter
-        //val selectedMealTypePosition = mealTypes.indexOfFirst { it == recipe.meal.displayName }
-        //mealTypeSpinner.setSelection(selectedMealTypePosition)
-
-        // Set recipe ingredients
-        recipe.ingredients.forEach { ingredient ->
-            addIngredientRow(ingredient)
+        if (recipeId != -1) {
+            loadRecipe(recipeId)
         }
 
-        // Add new ingredient row
-        addIngredientButton.setOnClickListener {
-            addIngredientRow()
-        }
+        fetchCategories()
+        fetchPreferences()
 
-        // Save updated recipe
-        saveButton.setOnClickListener {
-            val newName = recipeNameEditText.text.toString()
-            val newIngredients = mutableListOf<String>()
-
-            // Collect ingredients from input fields
-            for (i in 0 until ingredientContainer.childCount) {
-                val ingredientLayout = ingredientContainer.getChildAt(i) as LinearLayout
-                val etIngredientName = ingredientLayout.findViewById<EditText>(R.id.et_ingredient_name)
-                val etIngredientQuantity = ingredientLayout.findViewById<EditText>(R.id.et_ingredient_quantity)
-                val ingredientName = etIngredientName.text.toString()
-                val ingredientQuantity = etIngredientQuantity.text.toString()
-                newIngredients.add("$ingredientName: $ingredientQuantity")
-            }
-
-            val newInstructions = instructionsEditText.text.toString()
-            val preparationTimeText = timeEditText.text.toString()
-            val newPreparationTime = preparationTimeText.toIntOrNull()
-
-            if (newPreparationTime == null || newPreparationTime <= 0) {
-                timeEditText.error = "Unesite ispravno vrijeme pripreme u minutama"
-                return@setOnClickListener
-            }
-
-            val newMealType = Meal.fromDisplayName(mealTypeSpinner.selectedItem.toString())
-
-            val updatedRecipe = recipe.copy(
-                name = newName,
-                ingredients = newIngredients,
-                instructions = newInstructions,
-                preparationTime = newPreparationTime,
-                //meal = newMealType
-            )
-
-            // Return updated recipe
-            val resultIntent = Intent().apply {
-                putExtra("UPDATED_RECIPE", updatedRecipe)
-            }
-            setResult(Activity.RESULT_OK, resultIntent)
+        findViewById<Button>(R.id.btn_save).setOnClickListener {
+            saveRecipe(recipeId)
             finish()
         }
 
-        // Cancel editing
-        cancelButton.setOnClickListener {
+        findViewById<Button>(R.id.btn_cancel).setOnClickListener {
             finish()
         }
     }
 
-    // Function to add a new ingredient row
-    private fun addIngredientRow(existingIngredient: String? = null) {
-        // Inflate the ingredient layout
-        val ingredientLayout = layoutInflater.inflate(R.layout.ingredients_layout, null) as LinearLayout
+    private fun addIngredientLayout() {
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val ingredientView = inflater.inflate(R.layout.ingredients_layout, null)
+        ingredientContainer.addView(ingredientView)
 
-        // Find views in the inflated layout
-        val etIngredientName = ingredientLayout.findViewById<EditText>(R.id.et_ingredient_name)
-        val etIngredientQuantity = ingredientLayout.findViewById<EditText>(R.id.et_ingredient_quantity)
-        val spinnerUnit = ingredientLayout.findViewById<Spinner>(R.id.spinner_unit)
-        val btnRemoveIngredient = ingredientLayout.findViewById<Button>(R.id.btn_remove_ingredient)
-
-        // Set unit spinner
-        val units = arrayOf("g", "kg", "ml", "l")
-        val unitAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, units)
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerUnit.adapter = unitAdapter
-
-        // Set existing ingredient data if provided
-        existingIngredient?.let {
-            val parts = it.split(": ")
-            if (parts.size == 2) {
-                etIngredientName.setText(parts[0])
-                etIngredientQuantity.setText(parts[1])
-            }
-        }
-
-        // Remove ingredient row
+        val btnRemoveIngredient = ingredientView.findViewById<Button>(R.id.btn_remove_ingredient)
         btnRemoveIngredient.setOnClickListener {
-            ingredientContainer.removeView(ingredientLayout)
+            ingredientContainer.removeView(ingredientView)
         }
 
-        // Add ingredient row to container
-        ingredientContainer.addView(ingredientLayout)
+        fetchUnits(ingredientView)
     }
+
+    private fun setupAddIngredientButton() {
+        findViewById<Button>(R.id.btn_add_ingredient).setOnClickListener {
+            addIngredientLayout()
+        }
+    }
+
+    private fun saveRecipe(recipeId: Int) {
+        val name = recipeNameEditText.text.toString().trim()
+        val instructions = instructionsEditText.text.toString().trim()
+        val time = timeEditText.text.toString().trim()
+
+        if (name.isEmpty() || instructions.isEmpty() || time.isEmpty()) {
+            Toast.makeText(this, "Molimo unesite sve potrebne podatke.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        val updatedRecipe = RecipeRequest(
+            recipe_id = recipeId,
+            name = name,
+            description = instructions,
+            time = time.toInt(),
+            user_id = userId,
+            category_id = selectedCategoryId ?: 0,
+            category_name = getCategoryById(selectedCategoryId ?: 0)?.name,
+            preference_id = selectedPreferenceId ?: 0,
+            preference_name = getPreferenceById(selectedPreferenceId ?: 0)?.name,
+            ingredients = collectIngredients()
+        )
+
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = apiService.updateRecipe(updatedRecipe)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@EditRecipeActivity, "Recept uspješno spremljen!", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@EditRecipeActivity, "Greška pri spremanju recepta.", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@EditRecipeActivity, "Greška: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun collectIngredients(): List<Ingredient> {
+        val ingredientsList = mutableListOf<Ingredient>()
+        for (i in 0 until ingredientContainer.childCount) {
+            val ingredientView = ingredientContainer.getChildAt(i)
+            val nameEditText = ingredientView.findViewById<EditText>(R.id.et_ingredient_name)
+            val quantityEditText = ingredientView.findViewById<EditText>(R.id.et_ingredient_quantity)
+            val unitSpinner = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
+
+            val ingredientName = nameEditText.text.toString().trim()
+            val ingredientQuantity = quantityEditText.text.toString().trim().toDoubleOrNull() ?: 0.0
+            val selectedUnit = unitSpinner.selectedItem as? Units
+
+            if (ingredientName.isNotEmpty() && ingredientQuantity != 0.0 && selectedUnit != null) {
+                val ingredient = Ingredient(
+                    item_name = ingredientName,
+                    quantity = ingredientQuantity,
+                    unit_id = selectedUnit.unit_id,
+                    unit_name = selectedUnit.unit_name
+                )
+                ingredientsList.add(ingredient)
+            }
+        }
+        return ingredientsList
+    }
+
+
+    private fun loadRecipe(recipeId: Int) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = apiService.getRecipeById(recipeId)
+                if (response.isSuccessful) {
+                    val recipeResponse = response.body()
+                    Log.d("RecipeResponse", "Recipe: ${recipeResponse?.data}")
+                    recipeResponse?.data?.let {
+                        populateUI(it)
+                    } ?: run {
+                        Log.d("EditRecipe", "No recipe data found.")
+                    }
+                } else {
+                    Log.d("RecipeResponse", "Error loading recipe: ${response.message()}")
+                    Toast.makeText(this@EditRecipeActivity, "Error loading recipe", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@EditRecipeActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun populateUI(recipeRequest: RecipeRequest?) {
+        if (recipeRequest == null) {
+            Log.d("EditRecipe", "Recipe data is null.")
+            return
+        }
+
+        recipeNameEditText.setText(recipeRequest.name)
+        instructionsEditText.setText(recipeRequest.description)
+        timeEditText.setText(recipeRequest.time.toString())
+
+        recipeRequest.ingredients?.let {
+            Log.d("EditRecipe", "Ingredients in 'let' block: $it")
+            if (it.isNotEmpty()) {
+                it.forEach { ingredient ->
+                    addIngredientField(ingredient)
+                }
+            } else {
+                Log.d("EditRecipe", "No ingredients available.")
+            }
+        }
+
+        val selectedCategory = getCategoryById(recipeRequest.category_id)
+        selectedCategory?.let {
+            val categoryAdapter = categorySpinner.adapter as ArrayAdapter<Category>
+            val categoryPosition = categoryAdapter.getPosition(it)
+            categorySpinner.setSelection(categoryPosition)
+        }
+
+        val selectedPreference = getPreferenceById(recipeRequest.preference_id)
+        selectedPreference?.let {
+            val preferenceAdapter = preferenceSpinner.adapter as ArrayAdapter<Preference>
+            val preferencePosition = preferenceAdapter.getPosition(it)
+            preferenceSpinner.setSelection(preferencePosition)
+        }
+    }
+
+
+
+    private fun addIngredientField(ingredient: Ingredient) {
+        Log.d("EditRecipe", "Adding ingredient: ${ingredient.item_name}, quantity: ${ingredient.quantity}, unit: ${ingredient.unit_id}")
+
+        val inflater = LayoutInflater.from(this)
+        val view = inflater.inflate(R.layout.ingredients_layout, null)
+
+        val nameEditText = view.findViewById<EditText>(R.id.et_ingredient_name)
+        val quantityEditText = view.findViewById<EditText>(R.id.et_ingredient_quantity)
+        val unitSpinner = view.findViewById<Spinner>(R.id.spinner_unit)
+
+        nameEditText.setText(ingredient.item_name)
+        quantityEditText.setText(ingredient.quantity.toString())
+
+        if (unitSpinner.adapter == null || unitSpinner.adapter.count == 0) {
+            Log.d("UnitSpinner", "Unit spinner je null")
+            fetchUnits(view)
+        } else {
+            val unitAdapter = unitSpinner.adapter as? ArrayAdapter<Unit>
+            unitAdapter?.let {
+                Log.d("UnitSpinner", "Unit spinner je null2222222")
+                val selectedUnit = it.getItem(ingredient.unit_id)
+                val unitPosition = it.getPosition(selectedUnit)
+                unitSpinner.setSelection(unitPosition)
+            }
+        }
+
+        ingredientContainer.addView(view)
+    }
+
+    private fun getCategoryById(categoryId: Int): Category? {
+        return categoriesList.find { it.category_id == categoryId }
+    }
+
+    private fun getPreferenceById(preferenceId: Int): Preference? {
+        return preferencesList.find { it.preference_id == preferenceId }
+    }
+
+
+    private fun fetchCategories() {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        apiService.getCategories().enqueue(object : Callback<List<Category>> {
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                if (response.isSuccessful) {
+                    val categories = response.body() ?: emptyList()
+                    if (categories.isEmpty()) {
+                        Toast.makeText(this@EditRecipeActivity, "Nema dostupnih kategorija", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val categoryNames = categories.map { it.name }
+                    val adapter = ArrayAdapter(this@EditRecipeActivity, android.R.layout.simple_spinner_item, categoryNames)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    categorySpinner.adapter = adapter
+
+
+                    categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                            selectedCategoryId = categories[position].category_id
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            selectedCategoryId = null
+                        }
+                    }
+                } else {
+                    Toast.makeText(this@EditRecipeActivity, "Greška pri dohvaćanju kategorija", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                Toast.makeText(this@EditRecipeActivity, "Greška: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchUnits(ingredientView: View) {
+        val unitSpinner = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        apiService.getUnits().enqueue(object : Callback<List<Units>> {
+            override fun onResponse(call: Call<List<Units>>, response: Response<List<Units>>) {
+                if (response.isSuccessful) {
+                    val units = response.body() ?: emptyList()
+
+                    if (units.isNotEmpty()) {
+                        val unitAdapter = ArrayAdapter<Units>(this@EditRecipeActivity, android.R.layout.simple_spinner_item, units)
+                        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                        val unitSpinner = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
+                        unitSpinner.adapter = unitAdapter
+                    } else {
+                        Toast.makeText(this@EditRecipeActivity, "Nema dostupnih mjernih jedinica", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@EditRecipeActivity, "Greška pri dohvaćanju mjernih jedinica", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Units>>, t: Throwable) {
+                Toast.makeText(this@EditRecipeActivity, "Greška: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchPreferences() {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        apiService.getPreferences().enqueue(object : Callback<List<Preference>> {
+            override fun onResponse(call: Call<List<Preference>>, response: Response<List<Preference>>) {
+                if (response.isSuccessful) {
+                    val preferences = response.body() ?: emptyList()
+                    if (preferences.isEmpty()) {
+                        Toast.makeText(this@EditRecipeActivity, "Nema dostupnih preferencija", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val preferenceNames = preferences.map { it.name }
+                    val adapter = ArrayAdapter(this@EditRecipeActivity, android.R.layout.simple_spinner_item, preferenceNames)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    preferenceSpinner.adapter = adapter
+
+                    preferenceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                            selectedPreferenceId = preferences[position].preference_id
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            selectedPreferenceId = null
+                        }
+                    }
+                } else {
+                    Toast.makeText(this@EditRecipeActivity, "Greška pri dohvaćanju preferencija", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Preference>>, t: Throwable) {
+                Toast.makeText(this@EditRecipeActivity, "Greška: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }

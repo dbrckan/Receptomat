@@ -107,6 +107,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val searchView = view.findViewById<androidx.appcompat.widget.SearchView>(R.id.sv_recipe_search)
         searchView.isIconified = false
+        searchView.requestFocus()
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -125,6 +126,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         fetchRecipes()
         fetchCategoriesAndRecipes()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchRecipes()
     }
 
     private fun fetchCategoriesAndRecipes() {

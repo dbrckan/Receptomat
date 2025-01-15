@@ -111,13 +111,15 @@ interface ApiService {
     fun linkItemToRecipe(
         @Field("recipe_id") recipeId: Int,
         @Field("item_name") itemName: String,
-        @Field("quantity") quantity: Float,
+        @Field("quantity") quantity: Double,
         @Field("unit_id") unitId: Int
     ): Call<MessageResponse>
 
     @GET("receptomat/get_recipe_by_id.php")
     suspend fun getRecipeById(@Query("recipe_id") recipeId: Int): Response<RecipeResponseAdd>
 
+    @POST("receptomat/update_recipe.php")
+    suspend fun updateRecipe(@Body updatedRecipe: RecipeRequest): Response<RecipeResponse>
 
     /*pretrazivanje recepta*/
     @GET("receptomat/search_recipes.php")

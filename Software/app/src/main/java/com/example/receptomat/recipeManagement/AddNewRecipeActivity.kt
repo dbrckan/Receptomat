@@ -254,19 +254,19 @@ class AddNewRecipeActivity : AppCompatActivity() {
 
             val ingredientName = ingredientNameInput.text.toString().trim()
             val quantityString = quantityInput.text.toString().trim()
-            val quantity = quantityString.toFloatOrNull() ?: 0f
+            val quantity = quantityString.toDoubleOrNull()
             val unit = unitSpinner.selectedItem as Units
 
             Log.d("AddRecipe", "Recipe ID2: $recipeId")
             Log.d("AddRecipe", "Ingredient to save: $ingredientName, Quantity: $quantity, Unit: $unit")
 
-            if (ingredientName.isNotEmpty() && quantity > 0) {
+            if (ingredientName.isNotEmpty() && quantity != null && quantity > 0 ) {
                 addItem(ingredientName, quantity, unit, recipeId)
             }
         }
     }
 
-    private fun addItem(ingredientName: String, quantity: Float, unit: Units, recipeId: Int) {
+    private fun addItem(ingredientName: String, quantity: Double, unit: Units, recipeId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         apiService.addItem(ingredientName).enqueue(object : Callback<MessageResponse> {
             override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
@@ -289,7 +289,7 @@ class AddNewRecipeActivity : AppCompatActivity() {
         })
     }
 
-    private fun linkItemToRecipe(recipeId: Int, itemId: Int, itemName: String, quantity: Float, unitId: Int) {
+    private fun linkItemToRecipe(recipeId: Int, itemId: Int, itemName: String, quantity: Double, unitId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         apiService.linkItemToRecipe(recipeId, itemName, quantity, unitId).enqueue(object : Callback<MessageResponse> {
             override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
