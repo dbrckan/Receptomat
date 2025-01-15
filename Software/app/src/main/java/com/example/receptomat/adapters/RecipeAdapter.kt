@@ -28,7 +28,8 @@ class RecipeAdapter(
         private val recipeName: TextView = view.findViewById(R.id.tvNameRecipe)
         private val timeRecipe: TextView = view.findViewById(R.id.tvTimeRecipe)
         private val ivOverflowMenu: ImageView = itemView.findViewById(R.id.ivOverflowMenu)
-        private val categoryRecipe: TextView = view.findViewById(R.id.tvCategoryRecipe) // Ovdje se koristi TextView za prikaz kategorije
+        private val categoryRecipe: TextView = view.findViewById(R.id.tvCategoryRecipe)
+        private val cardView: androidx.cardview.widget.CardView = view.findViewById(R.id.cardView)
 
         fun bind(recipe: RecipeDB) {
             recipeName.text = recipe.name
@@ -47,6 +48,12 @@ class RecipeAdapter(
                 val intent = Intent(itemView.context, DetailActivity::class.java)
                 intent.putExtra("RECIPE_ID", recipe.recipe_id ?: -1)
                 itemView.context.startActivity(intent)
+            }
+
+            if (recipe.user_id == loggedInUserId) {
+                cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color2))
+            } else {
+                cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color))
             }
         }
     }
