@@ -153,4 +153,8 @@ interface ApiService {
     @GET("receptomat/get_recipe_by_id.php")
     suspend fun getRecipeById(@Query("recipe_id") recipeId: Int): Response<RecipeResponseAdd>
 
+
+    /*pretrazivanje recepta*/
+    @GET("receptomat/search_recipes.php")
+    fun searchRecipesByName(@Query("search") name: String): Call<List<RecipeDB>>
 }

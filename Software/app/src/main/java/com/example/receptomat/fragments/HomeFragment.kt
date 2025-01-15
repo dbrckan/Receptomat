@@ -103,6 +103,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             createRecipeLauncher.launch(intent)
         }
 
+        val searchView = view.findViewById<androidx.appcompat.widget.SearchView>(R.id.sv_recipe_search)
+        searchView.isIconified = false
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    searchRecipes(it)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    searchRecipes(it)
+                }
+                return true
+            }
+        })
+
         fetchRecipes()
         fetchCategoriesAndRecipes()
     }
@@ -274,6 +292,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun searchRecipes(query: String) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.searchRecipesByName(query)
 
+        call.enqueue(object : Callback<List<RecipeDB>> {
+            override fun onResponse(call: Call<List<RecipeDB>>, response: Response<List<RecipeDB>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { searchResults ->
+                        recipes.clear()
+                        recipes.addAll(searchResults)
+                        adapter.notifyDataSetChanged()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Pogreška pri pretrazi recepata", Toast.LENGTH_SHORT).show()
+                }
+            }
 
+            override fun onFailure(call: Call<List<RecipeDB>>, t: Throwable) {
+                Toast.makeText(requireContext(), "Pogreška pri povezivanju sa serverom", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
+}
