@@ -19,7 +19,8 @@ class RecipeAdapter(
     private val onDeleteClick: (RecipeDB) -> Unit,
     private val onEditClick: (RecipeDB) -> Unit,
     private val onFavoriteClick: (RecipeDB) -> Unit,
-    private val categories: List<Category>
+    private val categories: List<Category>,
+    private val loggedInUserId: Int
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -53,6 +54,10 @@ class RecipeAdapter(
     private fun showPopupMenu(view: View, recipe: RecipeDB) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(R.menu.menu_recipe, popupMenu.menu)
+
+        val isRecipeOwner = recipe.user_id == loggedInUserId
+        popupMenu.menu.findItem(R.id.action_delete).isVisible = isRecipeOwner
+        popupMenu.menu.findItem(R.id.action_edit).isVisible = isRecipeOwner
 
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {

@@ -44,6 +44,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val loggedInUserId = sharedPreferences.getInt("user_id", -1)
+
         recyclerView = view.findViewById(R.id.rv_recipes)
         adapter = RecipeAdapter(
             recipes,
@@ -65,7 +68,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 addToFavorites(recipe)
                 true
             },
-            categories
+            categories,
+            loggedInUserId
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)

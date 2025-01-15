@@ -194,7 +194,8 @@ class AddNewRecipeActivity : AppCompatActivity() {
             return
         }
 
-        val userId = 1
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
 
         val recipeRequest = RecipeDB(
             recipe_id = null,

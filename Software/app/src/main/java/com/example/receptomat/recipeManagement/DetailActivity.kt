@@ -20,7 +20,6 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var recipeNameTextView: TextView
     private lateinit var recipeMealTextView: TextView
-    private lateinit var ingredientsTextView: TextView
     private lateinit var instructionsTextView: TextView
     private lateinit var preparationTimeTextView: TextView
     private lateinit var preferenceTextView: TextView
@@ -106,8 +105,6 @@ class DetailActivity : AppCompatActivity() {
 
                     ingredientsContainer.addView(ingredientRow)
                 }
-            } else {
-                ingredientsTextView.text = "No ingredients available"
             }
         }
 
