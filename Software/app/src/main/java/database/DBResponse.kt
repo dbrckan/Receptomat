@@ -1,6 +1,7 @@
 package database
 
 import com.example.receptomat.entities.Ingredient
+import java.util.Date
 
 data class LoginResponse(
     val success: Boolean?,
@@ -16,15 +17,16 @@ data class BasicResponse(
 data class FavoriteRecipesResponse(
     val recipes: List<RecipeResponse>
 )
-
 data class RecipeResponse(
     val recipe_id: Int,
     val name: String,
-    val meal: String,
+    val description: String,
     val time: Int,
+    val user_id: Int,
+    val category_id: Int,
+    val preference_id: Int,
     val image_path: String?
 )
-
 data class ShoppingListsWithItemsResponse(
     val success: Boolean,
     val shopping_lists: List<ShoppingListWithItems>
@@ -93,6 +95,40 @@ data class MessageResponse(
     val message: String,
     val recipe_id: Int?,
     val item_id: Int?
+)
+
+data class RegisterRequest(
+    val name: String,
+    val username: String,
+    val email: String,
+    val password: String
+)
+
+data class AddFavoriteRecipeRequest(
+    val user_id: Int,
+    val recipe_id: Int
+)
+
+data class ReviewRequest(
+    val user_id: Int,
+    val recipe_id: Int,
+    val comment: String,
+    val rating: Int,
+    val date: Date
+)
+
+data class ReviewsResponse(
+    val success: Boolean,
+    val reviews: List<Review>,
+    val recipes: List<RecipeResponse>
+)
+
+data class Review(
+    val review_id: String,
+    val comment: String,
+    val rating: String,
+    val date: String,
+    val recipe_id: String
 )
 
 

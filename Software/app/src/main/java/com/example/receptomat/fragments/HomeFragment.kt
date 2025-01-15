@@ -17,21 +17,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.entities.Category
-import com.example.receptomat.entities.Meal
-import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeAdapter
 import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.recipeManagement.AddNewRecipeActivity
 import com.example.receptomat.recipeManagement.DetailActivity
 import com.example.receptomat.recipeManagement.EditRecipeActivity
 import database.ApiService
+import database.AddFavoriteRecipeRequest
 import database.BasicResponse
 import database.MessageResponse
 import database.RetrofitClient
 import retrofit2.Response
 import retrofit2.Call
 import retrofit2.Callback
-import java.util.Date
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -239,7 +237,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val userId = sharedPreferences.getInt("user_id", -1)
         if (userId != -1) {
             if (recipe.recipe_id != null) {
-                val request = ApiService.AddFavoriteRecipeRequest(userId, recipe.recipe_id)
+                val request = AddFavoriteRecipeRequest(userId, recipe.recipe_id)
                 val call = apiService.addFavoriteRecipe(request)
                 call.enqueue(object : Callback<BasicResponse> {
                     override fun onResponse(
@@ -292,7 +290,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun searchRecipes(query: String) {
+ private fun searchRecipes(query: String) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val call = apiService.searchRecipesByName(query)
 

@@ -1,4 +1,3 @@
-// FavoriteRecipesFragment.kt
 package com.example.receptomat.fragments
 
 import android.os.Bundle
@@ -12,23 +11,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 
-import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.RecipeDB
 import database.ApiService
 import database.BasicResponse
 import database.FavoriteRecipesResponse
 import database.RetrofitClient
 import android.content.Context.MODE_PRIVATE
 import com.example.receptomat.adapters.FavoritesAdapter
-import com.example.receptomat.entities.Meal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Date
 
 class FavoriteRecipesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FavoritesAdapter
-    private val favoriteRecipes = mutableListOf<Recipe>()
+    private val favoriteRecipes = mutableListOf<RecipeDB>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,18 +62,17 @@ class FavoriteRecipesFragment : Fragment() {
                 if (response.isSuccessful) {
                     val recipesResponse = response.body()
                     if (recipesResponse != null && !recipesResponse.recipes.isNullOrEmpty()) {
-                        Log.d("FavoriteRecipesFragment", "Primljeni recepti: ${recipesResponse.recipes}")
                         favoriteRecipes.clear()
                         favoriteRecipes.addAll(recipesResponse.recipes.map { recipe ->
-                            Recipe(
+                            RecipeDB(
                                 recipe_id = recipe.recipe_id,
                                 name = recipe.name,
-                                meal = recipe.meal?.let { Meal.fromDisplayName(it) } ?: Meal.BREAKFAST,
-                                ingredients = emptyList(),
-                                instructions = "",
-                                preparationTime = recipe.time,
-                                image_path = recipe.image_path,
-                                dateOfAddition = Date()
+                                description = recipe.description ?: "",
+                                time = recipe.time ?: 1,
+                                user_id = recipe.user_id,
+                                category_id = recipe.category_id ?: 1,
+                                preference_id = recipe.preference_id,
+                                image_path = recipe.image_path
                             )
                         })
                         adapter.notifyDataSetChanged()
@@ -99,7 +95,7 @@ class FavoriteRecipesFragment : Fragment() {
         })
     }
 
-    private fun removeFavoriteRecipe(recipe: Recipe) {
+    private fun removeFavoriteRecipe(recipe: RecipeDB) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)

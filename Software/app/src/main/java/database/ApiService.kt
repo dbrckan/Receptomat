@@ -2,7 +2,6 @@ package database
 
 import com.example.receptomat.entities.Category
 import com.example.receptomat.entities.Preference
-import com.example.receptomat.entities.Recipe
 import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.entities.Units
 import retrofit2.Call
@@ -22,40 +21,6 @@ interface ApiService {
         @Query("username") username: String,
         @Query("password") password: String
     ): Call<LoginResponse>
-
-    data class RegisterRequest(
-        val name: String,
-        val username: String,
-        val email: String,
-        val password: String
-    )
-
-    data class AddFavoriteRecipeRequest(
-        val user_id: Int,
-        val recipe_id: Int
-    )
-
-    data class ReviewRequest(
-        val user_id: Int,
-        val recipe_id: Int,
-        val comment: String,
-        val rating: Int,
-        val date: Date
-    )
-
-    data class ReviewsResponse(
-        val success: Boolean,
-        val reviews: List<Review>,
-        val recipes: List<Recipe>
-    )
-
-    data class Review(
-        val review_id: String,
-        val comment: String,
-        val rating: String,
-        val date: String,
-        val recipe_id: String
-    )
 
 
     @POST("receptomat/register.php")

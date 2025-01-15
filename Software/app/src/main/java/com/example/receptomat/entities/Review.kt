@@ -7,9 +7,3 @@ data class Review(
     val date: String,
     val recipe_id: String
 )
-
-data class ReviewsResponse(
-    val success: Boolean,
-    val reviews: List<Review>,
-    val recipes: List<Recipe>
-)

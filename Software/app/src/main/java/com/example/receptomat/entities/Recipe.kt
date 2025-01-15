@@ -7,7 +7,6 @@ import java.util.Date
 data class Recipe(
     val recipe_id: Int,
     val name: String,
-    val meal: Meal,
     val ingredients: List<String>,
     val instructions: String,
     val preparationTime: Int,
@@ -17,7 +16,6 @@ data class Recipe(
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
-        parcel.readSerializable() as Meal,
         parcel.createStringArrayList() ?: emptyList(),
         parcel.readString() ?: "",
         parcel.readInt(),
@@ -28,7 +26,6 @@ data class Recipe(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(recipe_id)
         parcel.writeString(name)
-        parcel.writeSerializable(meal)
         parcel.writeStringList(ingredients)
         parcel.writeString(instructions)
         parcel.writeInt(preparationTime)

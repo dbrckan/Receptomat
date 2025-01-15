@@ -91,9 +91,10 @@
                 android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/button_start_page_color"
+                android:padding="10dp"
                 android:text="Ukloni"
-                android:textSize="16sp"
-                android:padding="10dp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

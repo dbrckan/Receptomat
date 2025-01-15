@@ -7,23 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.adapters.ReviewsAdapter
-import com.example.receptomat.entities.Meal
-import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.entities.Review
 import database.ApiService
 import database.BasicResponse
 import database.RetrofitClient
-import com.example.receptomat.entities.ReviewsResponse
+import database.ReviewsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Date
 
 class ReviewsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReviewsAdapter
     private val userReviews = mutableListOf<Review>()
-    private val recepies = mutableListOf<Recipe>()
+    private val recipes = mutableListOf<RecipeDB>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +30,7 @@ class ReviewsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewReviews)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = ReviewsAdapter(userReviews, recepies) { review -> removeReview(review) }
+        adapter = ReviewsAdapter(userReviews, recipes) { review -> removeReview(review) }
         recyclerView.adapter = adapter
 
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -49,8 +47,8 @@ class ReviewsActivity : AppCompatActivity() {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val call = apiService.getReviewsForRecipeUserId(userId)
 
-        call.enqueue(object : Callback<ApiService.ReviewsResponse> {
-            override fun onResponse(call: Call<ApiService.ReviewsResponse>, response: Response<ApiService.ReviewsResponse>) {
+        call.enqueue(object : Callback<ReviewsResponse> {
+            override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>) {
                 if (response.isSuccessful) {
                     val reviewsResponse = response.body()
                     if (reviewsResponse != null && !reviewsResponse.reviews.isNullOrEmpty()) {
@@ -65,17 +63,17 @@ class ReviewsActivity : AppCompatActivity() {
                             )
                         })
 
-                        recepies.clear()
-                        recepies.addAll(reviewsResponse.recipes.map { recipe ->
-                            Recipe(
+                        recipes.clear()
+                        recipes.addAll(reviewsResponse.recipes.map { recipe ->
+                            RecipeDB(
                                 recipe_id = recipe.recipe_id,
                                 name = recipe.name,
-                                meal = recipe.meal?.let { Meal.fromDisplayName(it.displayName) } ?: Meal.BREAKFAST,
-                                ingredients = emptyList(),
-                                instructions = "",
-                                preparationTime = recipe.preparationTime,
-                                image_path = recipe.image_path,
-                                dateOfAddition = Date()
+                                description = recipe.description ?: "",
+                                time = recipe.time ?: 1,
+                                user_id = recipe.user_id,
+                                category_id = recipe.category_id ?: 1,
+                                preference_id = recipe.preference_id,
+                                image_path = recipe.image_path
                             )
                         })
 
@@ -91,7 +89,7 @@ class ReviewsActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<ApiService.ReviewsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {
                 Toast.makeText(this@ReviewsActivity, "Greška pri učitavanju recenzija: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("ReviewsActivity", "Greška pri učitavanju recenzija: ${t.message}")
                 t.printStackTrace()

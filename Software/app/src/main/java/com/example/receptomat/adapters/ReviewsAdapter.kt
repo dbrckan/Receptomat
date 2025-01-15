@@ -7,12 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
-import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.RecipeDB
 import com.example.receptomat.entities.Review
 
 class ReviewsAdapter(
     private val reviews: List<Review>,
-    private val recipes: List<Recipe>,
+    private val recipes: List<RecipeDB>,
     private val removeReviewCallback: (Review) -> Unit
 ) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
@@ -38,16 +38,14 @@ class ReviewsAdapter(
         val date: TextView = itemView.findViewById(R.id.date)
         val recipeName: TextView = itemView.findViewById(R.id.recipe_name)
         val recipeMeal: TextView = itemView.findViewById(R.id.recipe_meal)
-        //val recipeTime: TextView = itemView.findViewById(R.id.recipe_time)
         val removeButton: Button = itemView.findViewById(R.id.button_remove_review)
 
-        fun bind(review: Review, recipe: Recipe?) {
+        fun bind(review: Review, recipe: RecipeDB?) {
             comment.text = review.comment
             rating.text = review.rating.toString()
             date.text = review.date
             recipeName.text = recipe?.name ?: "Unknown"
-            recipeMeal.text = recipe?.meal?.displayName ?: "Unknown"
-            //recipeTime.text = recipe?.preparationTime ?: "Unknown"
+            recipeMeal.text = recipe?.description ?: "Unknown"
         }
     }
 }

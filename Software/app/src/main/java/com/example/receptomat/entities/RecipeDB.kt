@@ -10,7 +10,8 @@ data class RecipeDB(
     val time: Int,
     val user_id: Int,
     val category_id: Int,
-    val preference_id: Int
+    val preference_id: Int,
+    val image_path: String? = null,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

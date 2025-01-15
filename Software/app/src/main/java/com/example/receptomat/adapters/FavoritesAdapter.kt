@@ -9,11 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
-import com.example.receptomat.entities.Recipe
+import com.example.receptomat.entities.Category
+import com.example.receptomat.entities.RecipeDB
+import database.ApiService
+import database.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FavoritesAdapter(
-    private val favoriteRecipes: List<Recipe>,
-    private val onRemoveClick: (Recipe) -> Unit
+    private val favoriteRecipes: List<RecipeDB>,
+    private val onRemoveClick: (RecipeDB) -> Unit
 ) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -23,16 +29,18 @@ class FavoritesAdapter(
         val recipeImage: ImageView = view.findViewById(R.id.ivPicture)
         val removeButton: Button = view.findViewById(R.id.btnRemove)
 
-        fun bind(recipe: Recipe) {
+        fun bind(recipe: RecipeDB) {
             recipeName.text = recipe.name
-            mealName.text = recipe.meal?.displayName ?: itemView.context.getString(R.string.unknown_meal)
-            preparationTime.text = itemView.context.getString(R.string.preparation_time, recipe.preparationTime)
+            preparationTime.text = itemView.context.getString(R.string.preparation_time, recipe.time)
 
             val imageResId = if (recipe.image_path.isNullOrEmpty()) {
                 R.drawable.nedostupno
-            } else{
-
-                val resId = itemView.context.resources.getIdentifier(recipe.image_path, "drawable", itemView.context.packageName)
+            } else {
+                val resId = itemView.context.resources.getIdentifier(
+                    recipe.image_path,
+                    "drawable",
+                    itemView.context.packageName
+                )
                 if (resId != 0) resId else {
                     Log.e("FavoritesAdapter", "Invalid image path: ${recipe.image_path}")
                     R.drawable.nedostupno
@@ -41,14 +49,42 @@ class FavoritesAdapter(
 
             recipeImage.setImageResource(imageResId)
 
+            fetchCategoryName(recipe.category_id) { categoryName ->
+                mealName.text = categoryName ?: itemView.context.getString(R.string.unknown_meal)
+            }
+
             removeButton.setOnClickListener {
                 onRemoveClick(recipe)
             }
         }
     }
 
+    private fun fetchCategoryName(categoryId: Int, callback: (String?) -> Unit) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.getCategories()
+
+        call.enqueue(object : Callback<List<Category>> {
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                if (response.isSuccessful) {
+                    val categories = response.body()
+                    val category = categories?.find { it.category_id == categoryId }
+                    callback(category?.name)
+                } else {
+                    Log.e("FavoritesAdapter", "Failed to fetch categories: ${response.errorBody()?.string()}")
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                Log.e("FavoritesAdapter", "Error fetching categories", t)
+                callback(null)
+            }
+        })
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_favorites, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.recipe_favorites, parent, false)
         return ViewHolder(view)
     }
 

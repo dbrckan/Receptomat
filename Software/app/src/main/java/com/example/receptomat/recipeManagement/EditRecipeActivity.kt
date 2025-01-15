@@ -54,8 +54,8 @@ class EditRecipeActivity : AppCompatActivity() {
         val mealTypes = Meal.values().map { it.displayName }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mealTypes)
         mealTypeSpinner.adapter = adapter
-        val selectedMealTypePosition = mealTypes.indexOfFirst { it == recipe.meal.displayName }
-        mealTypeSpinner.setSelection(selectedMealTypePosition)
+        //val selectedMealTypePosition = mealTypes.indexOfFirst { it == recipe.meal.displayName }
+        //mealTypeSpinner.setSelection(selectedMealTypePosition)
 
         // Set recipe ingredients
         recipe.ingredients.forEach { ingredient ->
@@ -98,7 +98,7 @@ class EditRecipeActivity : AppCompatActivity() {
                 ingredients = newIngredients,
                 instructions = newInstructions,
                 preparationTime = newPreparationTime,
-                meal = newMealType
+                //meal = newMealType
             )
 
             // Return updated recipe

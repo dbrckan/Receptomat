@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import database.ApiService
 import database.BasicResponse
+import database.RegisterRequest
 import database.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
             val apiService = RetrofitClient.instance.create(ApiService::class.java)
-            val registrationRequest = ApiService.RegisterRequest(
+            val registrationRequest = RegisterRequest(
                 name = txtName.text.toString(),
                 username = txtUsername.text.toString(),
                 email = txtEmail.text.toString(),
