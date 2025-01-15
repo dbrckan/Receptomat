@@ -63,17 +63,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 editRecipe(recipe)
                 true
             },
-            onFavoriteClick = { recipeDB ->
-                val recipe = Recipe(
-                    recipe_id = recipeDB.recipe_id ?: 0,
-                    name = recipeDB.name,
-                    meal = Meal.BREAKFAST, // Default value, adjust as needed
-                    ingredients = emptyList(), // Default value
-                    instructions = "", // Default value
-                    preparationTime = recipeDB.time,
-                    image_path = null, // Default value
-                    dateOfAddition = Date() // Default value
-                )
+            onFavoriteClick = { recipe ->
                 addToFavorites(recipe)
                 true
             },
@@ -225,7 +215,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         editRecipeLauncher.launch(intent)
     }
 
-    private fun addToFavorites(recipe: Recipe) {
+    private fun addToFavorites(recipe: RecipeDB) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)

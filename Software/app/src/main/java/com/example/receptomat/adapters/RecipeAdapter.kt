@@ -63,13 +63,10 @@ class RecipeAdapter(
                     true
                 }
                 R.id.action_favorite -> {
+                    onFavoriteClick(recipe)
                     true
                 }
                 R.id.action_add_to_menu -> {
-                    true
-                }
-                R.id.action_favorite -> {
-                    onFavoriteClick(recipe)
                     true
                 }
                 else -> false
