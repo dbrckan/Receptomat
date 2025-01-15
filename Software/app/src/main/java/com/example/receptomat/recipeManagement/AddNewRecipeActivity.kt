@@ -1,5 +1,6 @@
 package com.example.receptomat.recipeManagement
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -220,7 +221,11 @@ class AddNewRecipeActivity : AppCompatActivity() {
                     Toast.makeText(this@AddNewRecipeActivity, message, Toast.LENGTH_SHORT).show()
 
                     val recipeId = response.body()?.recipe_id ?: return
-                    Log.d("AddRecipe", "Recipe ID: $recipeId")
+
+                    val intent = Intent().apply {
+                        putExtra("NEW_RECIPE", recipeRequest)
+                    }
+                    setResult(RESULT_OK, intent)
 
                     saveIngredients(recipeId)
 

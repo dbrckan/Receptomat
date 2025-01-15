@@ -36,6 +36,8 @@ class RecipeAdapter(
             val category = categories.find { it.category_id == recipe.category_id }
             categoryRecipe.text = category?.name ?: "Nepoznato"
 
+            recipeImage.setImageResource(R.drawable.nedostupno)
+
             ivOverflowMenu.setOnClickListener {
                 showPopupMenu(it, recipe)
             }
