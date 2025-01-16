@@ -1,5 +1,6 @@
 package com.example.receptomat.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,14 +11,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
-
 import com.example.receptomat.entities.RecipeDB
+import com.example.receptomat.adapters.FavoritesAdapter
+import com.example.receptomat.recipeManagement.DetailActivity
 import database.ApiService
 import database.BasicResponse
 import database.FavoriteRecipesResponse
 import database.RetrofitClient
 import android.content.Context.MODE_PRIVATE
-import com.example.receptomat.adapters.FavoritesAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,7 +36,11 @@ class FavoriteRecipesFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewFavorites)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter = FavoritesAdapter(favoriteRecipes) { recipe -> removeFavoriteRecipe(recipe) }
+        adapter = FavoritesAdapter(
+            favoriteRecipes,
+            onRemoveClick = { recipe -> removeFavoriteRecipe(recipe) },
+            onItemClick = { recipe -> navigateToDetail(recipe) }
+        )
         recyclerView.adapter = adapter
 
         return view
@@ -131,5 +136,11 @@ class FavoriteRecipesFragment : Fragment() {
             Toast.makeText(context, "Korisnički ID ili ID recepta je null", Toast.LENGTH_SHORT).show()
             Log.e("FavoriteRecipesFragment", "Korisnički ID ili ID recepta je null")
         }
+    }
+
+    private fun navigateToDetail(recipe: RecipeDB) {
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra("RECIPE_ID", recipe.recipe_id)
+        startActivity(intent)
     }
 }

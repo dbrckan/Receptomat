@@ -1,5 +1,6 @@
 package com.example.receptomat.adapters
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.entities.Category
 import com.example.receptomat.entities.RecipeDB
+import com.example.receptomat.recipeManagement.DetailActivity
 import database.ApiService
 import database.RetrofitClient
 import retrofit2.Call
@@ -19,7 +21,8 @@ import retrofit2.Response
 
 class FavoritesAdapter(
     private val favoriteRecipes: List<RecipeDB>,
-    private val onRemoveClick: (RecipeDB) -> Unit
+    private val onRemoveClick: (RecipeDB) -> Unit,
+    private val onItemClick: (RecipeDB) -> Unit
 ) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -51,6 +54,10 @@ class FavoritesAdapter(
 
             fetchCategoryName(recipe.category_id) { categoryName ->
                 mealName.text = categoryName ?: itemView.context.getString(R.string.unknown_meal)
+            }
+
+            itemView.setOnClickListener {
+                onItemClick(recipe)
             }
 
             removeButton.setOnClickListener {

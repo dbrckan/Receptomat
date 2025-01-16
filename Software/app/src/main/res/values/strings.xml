@@ -46,5 +46,8 @@
     <string name="favorites">Vaši najdraži recepti</string>
     <string name="unknown_meal">Nepoznato jelo</string>
 
-
+    <string name="leave_rating">Ostavite ocjenu</string>
+    <string name="leave_comment">Ostavite komentar</string>
+    <string name="comment_hint">Napišite svoj komentar ovdje...</string>
+    <string name="submit_rating">Ocijeni</string>
 </resources>
