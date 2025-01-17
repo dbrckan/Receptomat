@@ -52,6 +52,7 @@ class FavoritesAdapter(
 
             recipeImage.setImageResource(imageResId)
 
+            Log.d("FavoritesAdapter", "Recipe ID: ${recipe.recipe_id}, Category ID: ${recipe.category_id}")
             fetchCategoryName(recipe.category_id) { categoryName ->
                 mealName.text = categoryName ?: itemView.context.getString(R.string.unknown_meal)
             }
@@ -74,7 +75,11 @@ class FavoritesAdapter(
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
                 if (response.isSuccessful) {
                     val categories = response.body()
+                    Log.d("FavoritesAdapter", "Fetched categories: $categories")
                     val category = categories?.find { it.category_id == categoryId }
+                    if (category == null) {
+                        Log.e("FavoritesAdapter", "Category ID $categoryId not found in fetched categories")
+                    }
                     callback(category?.name)
                 } else {
                     Log.e("FavoritesAdapter", "Failed to fetch categories: ${response.errorBody()?.string()}")

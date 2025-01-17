@@ -80,6 +80,7 @@ class FavoriteRecipesFragment : Fragment() {
                                 image_path = recipe.image_path
                             )
                         })
+                        Log.d("FavoriteRecipesFragment", "Učitani recepti: $favoriteRecipes")
                         adapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(context, "Nema pronađenih recepata", Toast.LENGTH_SHORT).show()
