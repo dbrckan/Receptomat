@@ -247,6 +247,22 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp"
+            android:text="Recenzije recepta"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+    </LinearLayout>
 </ScrollView>

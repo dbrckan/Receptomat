@@ -2,6 +2,7 @@ package com.example.receptomat
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ class ReviewsActivity : AppCompatActivity() {
     private lateinit var adapter: ReviewsAdapter
     private val userReviews = mutableListOf<Review>()
     private val recipes = mutableListOf<RecipeDB>()
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,11 @@ class ReviewsActivity : AppCompatActivity() {
 
         adapter = ReviewsAdapter(userReviews, recipes) { review -> removeReview(review) }
         recyclerView.adapter = adapter
+
+        btnBack = findViewById(R.id.btn_back)
+        btnBack.setOnClickListener {
+            onBackPressed()
+        }
 
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)
@@ -56,13 +63,13 @@ class ReviewsActivity : AppCompatActivity() {
                         userReviews.addAll(reviewsResponse.reviews.map { apiReview ->
                             Review(
                                 review_id = apiReview.review_id,
+                                username = apiReview.username,
                                 comment = apiReview.comment,
                                 rating = apiReview.rating,
                                 date = apiReview.date,
                                 recipe_id = apiReview.recipe_id
                             )
                         })
-
                         recipes.clear()
                         recipes.addAll(reviewsResponse.recipes.map { recipe ->
                             RecipeDB(

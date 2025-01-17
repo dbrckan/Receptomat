@@ -13,7 +13,6 @@ import retrofit2.http.Query
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import java.util.Date
 
 interface ApiService {
     @GET("receptomat/login.php")
@@ -51,10 +50,8 @@ interface ApiService {
     @POST("receptomat/delete_shopping_list.php")
     fun deleteShoppingList(@Body request: DeleteListRequest): Call<BasicResponse>
 
-
-
     @POST("receptomat/recipe_review.php")
-    fun addReview(@Body request: ReviewRequest): Call<BasicResponse>
+    fun addReview(@Body request: ReviewRequest): Call<AddReviewResponse>
 
     @GET("receptomat/recipe_review.php")
     fun getReviewsForRecipeId(@Query("recipe_id") recipeId: Int): Call<ReviewsResponse>

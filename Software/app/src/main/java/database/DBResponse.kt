@@ -1,7 +1,7 @@
 package database
 
 import com.example.receptomat.entities.Ingredient
-import java.util.Date
+
 
 data class LoginResponse(
     val success: Boolean?,
@@ -114,7 +114,7 @@ data class ReviewRequest(
     val recipe_id: Int,
     val comment: String,
     val rating: Int,
-    val date: Date
+    val date: String
 )
 
 data class ReviewsResponse(
@@ -122,13 +122,19 @@ data class ReviewsResponse(
     val reviews: List<Review>,
     val recipes: List<RecipeResponse>
 )
-
 data class Review(
     val review_id: String,
     val comment: String,
+    val username : String,
     val rating: String,
     val date: String,
     val recipe_id: String
+)
+
+data class AddReviewResponse(
+    val success: Boolean,
+    val message: String,
+    val error: String?
 )
 
 
