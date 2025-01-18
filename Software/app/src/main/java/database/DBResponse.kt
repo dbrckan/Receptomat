@@ -150,3 +150,22 @@ data class RecipeItem(
     val quantity: String,
     val unit: String
 )
+
+
+
+data class UpdateUserPreferenceRequest(
+    val user_id: Int,
+    val preference_id: Int
+)
+
+data class PreferenceResponse(
+    val success: Boolean,
+    val data: List<Preference>
+)
+
+data class Preference(
+    val preference_id: String,
+    val name: String,
+    val description: String
+)
+

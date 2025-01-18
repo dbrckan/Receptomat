@@ -125,5 +125,12 @@ interface ApiService {
     @GET("/receptomat/get_recipe_item_for_cart.php")
     fun getRecipeItems(@Query("recipe_id") recipeId: Int): Call<GetRecipeItemsResponse>
 
+    @GET("/receptomat/get_preferences.php")
+    fun getPreferencesProfile(): Call<PreferenceResponse>
+
+
+
+    @POST("/receptomat/update_user_preference.php")
+    fun updateUserPreference(@Body request: UpdateUserPreferenceRequest): Call<BasicResponse>
 
 }
