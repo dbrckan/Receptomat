@@ -1,5 +1,6 @@
 package com.example.receptomat.recipeManagement
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,8 @@ import com.example.receptomat.adapters.ReviewsForRecipeAdapter
 import com.example.receptomat.entities.Review
 import database.AddReviewResponse
 import database.ApiService
+import database.GetRecipeItemsResponse
+import database.RecipeItem
 import database.RecipeRequest
 import database.RetrofitClient
 import database.ReviewRequest
@@ -65,6 +68,16 @@ class DetailActivity : AppCompatActivity() {
         reviewsAdapter = ReviewsForRecipeAdapter(reviewsList)
         recyclerViewReviews.adapter = reviewsAdapter
 
+        val btnShoppingCart: ImageView = findViewById(R.id.btn_shopping_cart)
+        btnShoppingCart.setOnClickListener {
+            val recipeId = intent.getIntExtra("RECIPE_ID", -1)
+            if (recipeId != -1) {
+                fetchItemsForCartAndOpenActivity(recipeId)
+            } else {
+                Toast.makeText(this, "Recipe ID not found!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         val recipeId = intent.getIntExtra("RECIPE_ID", -1)
         if (recipeId != -1) {
             fetchRecipeData(recipeId)
@@ -78,7 +91,50 @@ class DetailActivity : AppCompatActivity() {
         btnSubmitRating.setOnClickListener {
             submitReview(recipeId)
         }
+
+
     }
+
+
+
+
+    private fun fetchItemsForCartAndOpenActivity(recipeId: Int) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        apiService.getRecipeItems(recipeId).enqueue(object : Callback<GetRecipeItemsResponse> {
+            override fun onResponse(call: Call<GetRecipeItemsResponse>, response: Response<GetRecipeItemsResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("API Response", "Response: ${response.body()}")
+                    val items = response.body()?.items ?: emptyList()
+                    openEditShoppingListActivity(items)
+                } else {
+                    Log.e("API Error", "Failed to fetch items: ${response.message()}")
+                }
+            }
+
+
+
+            override fun onFailure(call: Call<GetRecipeItemsResponse>, t: Throwable) {
+                Log.e("API Error", "Network error: ${t.message}", t)
+                Toast.makeText(this@DetailActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+
+    private fun openEditShoppingListActivity(items: List<RecipeItem>) {
+        val itemNames = ArrayList(items.map { it.item_name })
+        val intent = Intent(this, EditShoppingListActivity::class.java).apply {
+            putExtra("is_new", true)
+            putStringArrayListExtra("items", itemNames)
+        }
+        startActivity(intent)
+    }
+
+
+
+
+
 
     private fun fetchRecipeData(recipeId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)

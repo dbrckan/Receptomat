@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.receptomat.recipeManagement.EditShoppingListActivity
 import com.example.receptomat.LoginActivity
 import com.example.receptomat.R
 
@@ -40,7 +41,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         adapter = ShoppingListAdapter(
             mutableListOf(),
-            { selectedList -> openEditFragment(selectedList) },
+            { selectedList -> openEditActivity(selectedList) },
             { selectedList -> deleteShoppingList(selectedList) }
         )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -49,29 +50,12 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         fetchShoppingLists()
 
         addButton.setOnClickListener {
-            val container = view?.findViewById<FrameLayout>(R.id.fragment_container)
-            container?.visibility = View.VISIBLE
-
-
-            val fragment = EditShoppingListFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean("is_new", true)
-                }
+            val intent = Intent(requireContext(), EditShoppingListActivity::class.java).apply {
+                putExtra("is_new", true)
             }
+            startActivity(intent)
+        }
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
-        }
-        parentFragmentManager.addOnBackStackChangedListener {
-            val currentFragment = parentFragmentManager.findFragmentById(R.id.fragment_container)
-            if (currentFragment is EditShoppingListFragment) {
-                hideFloatingActionButton()
-            } else {
-                showFloatingActionButton()
-            }
-        }
 
 
     }
@@ -132,24 +116,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         })
     }
 
-    private fun openEditFragment(selectedList: ShoppingListWithItems) {
-        val fragment = EditShoppingListFragment().apply {
-            arguments = Bundle().apply {
-                putBoolean("is_new", false)
-                putInt("list_id", selectedList.list_id)
-                putString("list_name", selectedList.list_name)
-                putStringArrayList("items", ArrayList(selectedList.items))
-            }
+    private fun openEditActivity(selectedList: ShoppingListWithItems) {
+        val intent = Intent(requireContext(), EditShoppingListActivity::class.java).apply {
+            putExtra("is_new", false)
+            putExtra("list_id", selectedList.list_id)
+            putExtra("list_name", selectedList.list_name)
+            putExtra("items", ArrayList(selectedList.items))
         }
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-
-        hideFloatingActionButton()
-
-    view?.findViewById<FrameLayout>(R.id.fragment_container)?.visibility = View.VISIBLE
+        startActivity(intent)
     }
+
+
+
 
 }

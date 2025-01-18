@@ -121,4 +121,9 @@ interface ApiService {
     /*pretrazivanje recepta*/
     @GET("receptomat/search_recipes.php")
     fun searchRecipesByName(@Query("search") name: String): Call<List<RecipeDB>>
+
+    @GET("/receptomat/get_recipe_item_for_cart.php")
+    fun getRecipeItems(@Query("recipe_id") recipeId: Int): Call<GetRecipeItemsResponse>
+
+
 }

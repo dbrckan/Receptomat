@@ -9,7 +9,7 @@ import database.ShoppingListWithItems
 
 class ShoppingListAdapter(
     private val shoppingLists: MutableList<ShoppingListWithItems>,
-    private val onListClick: (ShoppingListWithItems) -> Unit,
+    private val onItemClick: (ShoppingListWithItems) -> Unit,
     private val onDeleteClick: (ShoppingListWithItems) -> Unit
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
@@ -30,9 +30,7 @@ class ShoppingListAdapter(
         holder.nameTextView.text = shoppingList.list_name
         holder.itemsTextView.text = shoppingList.items.joinToString(", ")
 
-        holder.itemView.setOnClickListener {
-            onListClick(shoppingList)
-        }
+        holder.itemView.setOnClickListener { onItemClick(shoppingList) }
 
         holder.deleteButton.setOnClickListener { onDeleteClick(shoppingList) }
 

@@ -1,6 +1,7 @@
 package database
 
 import com.example.receptomat.entities.Ingredient
+import java.io.Serializable
 
 
 data class LoginResponse(
@@ -138,3 +139,14 @@ data class AddReviewResponse(
 )
 
 
+data class GetRecipeItemsResponse(
+    val success: Boolean,
+    val items: List<RecipeItem>
+)
+
+data class RecipeItem(
+    val item_id: Int,
+    val item_name: String,
+    val quantity: String,
+    val unit: String
+)

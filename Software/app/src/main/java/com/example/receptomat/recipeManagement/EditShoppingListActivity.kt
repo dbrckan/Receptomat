@@ -1,29 +1,28 @@
-package com.example.receptomat.fragments
+package com.example.receptomat.recipeManagement
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.receptomat.R
 import com.example.receptomat.adapters.Item
 import com.example.receptomat.adapters.ItemAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import database.AddShoppingListRequest
 import database.ApiService
 import database.BasicResponse
 import database.DeleteItemRequest
+import database.RecipeItem
 import database.RetrofitClient
 import database.UpdateShoppingListRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) {
+class EditShoppingListActivity : AppCompatActivity() {
 
     private lateinit var saveButton: Button
     private lateinit var cancelButton: Button
@@ -33,40 +32,50 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
     private val items = mutableListOf<Item>()
     private var listId: Int = -1
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val cartFragmentFab = requireActivity().findViewById<FloatingActionButton>(R.id.fabAddList)
-        cartFragmentFab?.visibility = View.GONE
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_edit_shopping_list)
 
-        saveButton = view.findViewById(R.id.buttonSave)
-        cancelButton = view.findViewById(R.id.buttonCancel)
-        addItemButton = view.findViewById(R.id.buttonAddItem)
-        listNameEditText = view.findViewById(R.id.editTextListName)
-        itemsRecyclerView = view.findViewById(R.id.recyclerViewItems)
+        saveButton = findViewById(R.id.buttonSave)
+        cancelButton = findViewById(R.id.buttonCancel)
+        addItemButton = findViewById(R.id.buttonAddItem)
+        listNameEditText = findViewById(R.id.editTextListName)
+        itemsRecyclerView = findViewById(R.id.recyclerViewItems)
 
-        // Postavljanje RecyclerView adaptera
-        itemsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        itemsRecyclerView.layoutManager = LinearLayoutManager(this)
         itemsRecyclerView.adapter = ItemAdapter(items, { position, newName ->
             items[position] = Item(items[position].id, newName, "")
         }, { position, item ->
             deleteItemFromList(item, position)
         })
 
-        arguments?.let { bundle ->
-            val isNew = bundle.getBoolean("is_new", true)
-            if (!isNew) {
-
-                listId = bundle.getInt("list_id", -1)
-                listNameEditText.setText(bundle.getString("list_name", ""))
-                val receivedItems = bundle.getStringArrayList("items") ?: arrayListOf()
+        val isNew = intent.getBooleanExtra("is_new", true)
+        if (isNew) {
+            val receivedItems = intent.getStringArrayListExtra("items")
+            if (receivedItems != null) {
                 items.clear()
-                items.addAll(receivedItems.mapIndexed { index, name -> Item(index + 1, name, "") })
+                items.addAll(receivedItems.mapIndexed { index, name ->
+                    Item(index + 1, name, "")
+                })
                 itemsRecyclerView.adapter?.notifyDataSetChanged()
-            } else {
+            }
+            listNameEditText.setText("New Shopping List")
+        } else {
+            listId = intent.getIntExtra("list_id", -1)
+            val listName = intent.getStringExtra("list_name") ?: ""
+            listNameEditText.setText(listName)
 
-                listId = -1
+            val receivedItems = intent.getStringArrayListExtra("items")
+            if (receivedItems != null) {
+                items.clear()
+                items.addAll(receivedItems.mapIndexed { index, name ->
+                    Item(index + 1, name, "")
+                })
+                itemsRecyclerView.adapter?.notifyDataSetChanged()
             }
         }
+
+
 
         addItemButton.setOnClickListener {
             items.add(Item(-1, "", ""))
@@ -76,13 +85,13 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
         saveButton.setOnClickListener {
             val listName = listNameEditText.text.toString().trim()
             if (listName.isEmpty()) {
-                Toast.makeText(requireContext(), "Enter a list name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Enter a list name", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val itemNames = items.map { it.name }.filter { it.isNotBlank() }
             if (itemNames.isEmpty()) {
-                Toast.makeText(requireContext(), "Add at least one item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Add at least one item", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -94,13 +103,13 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
         }
 
         cancelButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            finish()
         }
     }
 
     private fun createShoppingList(listName: String, itemNames: List<String>) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)
 
         val request = AddShoppingListRequest(list_name = listName, user_id = userId, items = itemNames)
@@ -108,29 +117,28 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
         apiService.createShoppingListWithItems(request).enqueue(object : Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(requireContext(), "List created successfully", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.popBackStack()
+                    Toast.makeText(this@EditShoppingListActivity, "List created successfully", Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
-                    Toast.makeText(requireContext(), "Error creating list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditShoppingListActivity, "Error creating list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditShoppingListActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-
     private fun updateShoppingList(listName: String) {
         if (listId == -1) {
-            Toast.makeText(requireContext(), "Invalid list ID", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Invalid list ID", Toast.LENGTH_SHORT).show()
             return
         }
 
         val itemNames = items.map { it.name }.filter { it.isNotBlank() }
         if (itemNames.isEmpty()) {
-            Toast.makeText(requireContext(), "Add at least one item", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Add at least one item", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -144,23 +152,22 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
         apiService.updateShoppingList(request).enqueue(object : Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(requireContext(), "List updated successfully", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.popBackStack()
+                    Toast.makeText(this@EditShoppingListActivity, "List updated successfully", Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
-                    Toast.makeText(requireContext(), "Error updating list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditShoppingListActivity, "Error updating list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditShoppingListActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-
     private fun deleteItemFromList(item: Item, position: Int) {
         if (item.id == -1 || listId == -1) {
-            Toast.makeText(requireContext(), "Invalid item or list ID", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Invalid item or list ID", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -172,16 +179,15 @@ class EditShoppingListFragment : Fragment(R.layout.fragment_edit_shopping_list) 
                 if (response.isSuccessful && response.body()?.success == true) {
                     items.removeAt(position)
                     itemsRecyclerView.adapter?.notifyItemRemoved(position)
-                    Toast.makeText(requireContext(), "Item deleted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditShoppingListActivity, "Item deleted", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "Error deleting item: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditShoppingListActivity, "Error deleting item: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditShoppingListActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
-
 }
