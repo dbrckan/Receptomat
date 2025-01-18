@@ -169,3 +169,9 @@ data class Preference(
     val description: String
 )
 
+data class UserPreferenceResponse(
+    val success: Boolean,
+    val preference_id: Int?
+)
+
+

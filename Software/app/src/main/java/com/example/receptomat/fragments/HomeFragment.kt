@@ -27,6 +27,7 @@ import database.AddFavoriteRecipeRequest
 import database.BasicResponse
 import database.MessageResponse
 import database.RetrofitClient
+import database.UserPreferenceResponse
 import retrofit2.Response
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: RecipeAdapter
     private val recipes = mutableListOf<RecipeDB>()
     private val categories = mutableListOf<Category>()
+    private var loggedInUserId: Int = -1
 
     private lateinit var createRecipeLauncher: ActivityResultLauncher<Intent>
     private lateinit var editRecipeLauncher: ActivityResultLauncher<Intent>
@@ -46,6 +48,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
         val loggedInUserId = sharedPreferences.getInt("user_id", -1)
+
+        if (loggedInUserId != -1) {
+            fetchUserPreference(loggedInUserId) { preferenceId ->
+                fetchRecipesWithPreference(preferenceId)
+            }
+        }
 
         recyclerView = view.findViewById(R.id.rv_recipes)
         adapter = RecipeAdapter(
@@ -69,7 +77,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 true
             },
             categories,
-            loggedInUserId
+            loggedInUserId,
+            userPreferenceId = -1
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
@@ -322,5 +331,80 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
     }
+
+    private fun fetchUserPreference(loggedInUserId: Int, callback: (Int?) -> Unit) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.getUserPreference(loggedInUserId)
+
+        call.enqueue(object : Callback<UserPreferenceResponse> {
+            override fun onResponse(
+                call: Call<UserPreferenceResponse>,
+                response: Response<UserPreferenceResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val preferenceId = response.body()?.preference_id
+                    callback(preferenceId)
+                } else {
+                    Toast.makeText(requireContext(), "Pogreška pri dohvaćanju preferencije", Toast.LENGTH_SHORT).show()
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserPreferenceResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Pogreška pri povezivanju s serverom", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
+    }
+
+    private fun fetchRecipesWithPreference(userPreferenceId: Int?) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.getRecipes()
+
+        call.enqueue(object : Callback<List<RecipeDB>> {
+            override fun onResponse(call: Call<List<RecipeDB>>, response: Response<List<RecipeDB>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { recipeDBList ->
+                        recipes.clear()
+                        recipes.addAll(recipeDBList)
+
+
+                        adapter = RecipeAdapter(
+                            recipes,
+                            onItemClick = { selectedRecipe ->
+                                val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                                    putExtra("RECIPE_DATA", selectedRecipe)
+                                }
+                                startActivity(intent)
+                            },
+                            onDeleteClick = { recipe ->
+                                showDeleteConfirmationDialog(recipe)
+                            },
+                            onEditClick = { recipe ->
+                                editRecipe(recipe)
+                                true
+                            },
+                            onFavoriteClick = { recipe ->
+                                addToFavorites(recipe)
+                                true
+                            },
+                            categories,
+                            loggedInUserId,
+                            userPreferenceId ?: -1 // Ako je `null`, koristi -1 kao podrazumijevanu vrijednost
+                        )
+
+                        recyclerView.adapter = adapter
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Pogreška pri učitavanju recepata", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<RecipeDB>>, t: Throwable) {
+                Toast.makeText(requireContext(), "Pogreška pri povezivanju s serverom", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
 }

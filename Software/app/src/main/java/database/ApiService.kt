@@ -133,4 +133,7 @@ interface ApiService {
     @POST("/receptomat/update_user_preference.php")
     fun updateUserPreference(@Body request: UpdateUserPreferenceRequest): Call<BasicResponse>
 
+    @GET("/receptomat/get_user_preference.php")
+    fun getUserPreference(@Query("user_id") userId: Int): Call<UserPreferenceResponse>
+
 }

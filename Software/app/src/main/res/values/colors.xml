@@ -7,4 +7,5 @@
     <color name="card_color">#F0E7E6</color>
     <color name="red_700">#C62828</color>
     <color name="card_color2">#E8D8D3</color>
+    <color name="highlight_color">#FFD700</color>
 </resources>

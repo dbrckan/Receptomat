@@ -20,7 +20,8 @@ class RecipeAdapter(
     private val onEditClick: (RecipeDB) -> Unit,
     private val onFavoriteClick: (RecipeDB) -> Unit,
     private val categories: List<Category>,
-    private val loggedInUserId: Int
+    private val loggedInUserId: Int,
+    private val userPreferenceId: Int
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -50,7 +51,9 @@ class RecipeAdapter(
                 itemView.context.startActivity(intent)
             }
 
-            if (recipe.user_id == loggedInUserId) {
+            if (recipe.preference_id == userPreferenceId) {
+                cardView.setCardBackgroundColor(itemView.context.getColor(R.color.highlight_color))
+            } else if (recipe.user_id == loggedInUserId) {
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color2))
             } else {
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color))

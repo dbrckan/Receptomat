@@ -24,6 +24,7 @@ import database.PreferenceResponse
 import database.RetrofitClient
 import database.UpdateNotificationsRequest
 import database.UpdateUserPreferenceRequest
+import database.UserPreferenceResponse
 import database.UserProfileResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,16 +83,22 @@ class ProfileFragment : Fragment() {
         apiService.getPreferencesProfile().enqueue(object : Callback<PreferenceResponse> {
             override fun onResponse(call: Call<PreferenceResponse>, response: Response<PreferenceResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    val preferences = response.body()?.data ?: emptyList()
-
+                    preferences = response.body()?.data ?: emptyList()
 
                     val preferenceNames = preferences.map { it.name }
-
-
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, preferenceNames)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     preferenceSpinner.adapter = adapter
 
+
+                    fetchUserPreference { userPreferenceId ->
+                        if (userPreferenceId != null) {
+                            val index = preferences.indexOfFirst { it.preference_id == userPreferenceId.toString() }
+                            if (index >= 0) {
+                                preferenceSpinner.setSelection(index)
+                            }
+                        }
+                    }
 
                     preferenceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -108,6 +115,34 @@ class ProfileFragment : Fragment() {
 
             override fun onFailure(call: Call<PreferenceResponse>, t: Throwable) {
                 Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchUserPreference(callback: (Int?) -> Unit) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        if (userId == -1) {
+            Toast.makeText(requireContext(), "Invalid user ID", Toast.LENGTH_SHORT).show()
+            callback(null)
+            return
+        }
+
+        apiService.getUserPreference(userId).enqueue(object : Callback<UserPreferenceResponse> {
+            override fun onResponse(call: Call<UserPreferenceResponse>, response: Response<UserPreferenceResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val userPreferenceId = response.body()?.preference_id
+                    callback(userPreferenceId)
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserPreferenceResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Failed to fetch user preference", Toast.LENGTH_SHORT).show()
+                callback(null)
             }
         })
     }
