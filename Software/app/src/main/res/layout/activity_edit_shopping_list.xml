@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F8E8E8">
+    android:background="#F0E7E6">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textColor="#FFFFFF"
-            android:background="#C62828"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#612B2B"/>
 
         <Button
             android:id="@+id/buttonSave"
@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:text="Save"
             android:textColor="#FFFFFF"
-            android:background="#C62828" />
+            android:backgroundTint="#612B2B"
+            />
     </LinearLayout>
 
     <EditText
@@ -48,9 +49,9 @@
         android:layout_height="wrap_content"
         android:text="Add Item"
         android:textColor="#FFFFFF"
-        android:background="#C62828"
         android:padding="8dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#612B2B"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewItems"

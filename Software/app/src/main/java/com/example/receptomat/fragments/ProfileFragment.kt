@@ -191,7 +191,7 @@ class ProfileFragment : Fragment() {
             override fun onResponse(call: Call<UserProfileResponse>, response: Response<UserProfileResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val user = response.body()!!
-                    usernameTextView.text = "Username: ${user.username}"
+                    usernameTextView.text = "Korisničko ime: ${user.username}"
                     emailTextView.text = "Email: ${user.email}"
                     notificationSwitch.isChecked = user.notifications == 1
                 } else {

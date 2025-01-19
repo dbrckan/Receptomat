@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this@LoginActivity, RecipesActivity::class.java)
                         startActivity(intent)
                         finish()
-                    } else {
+                } else {
                         Toast.makeText(this@LoginActivity, loginResponse?.error ?: "Pogrešno korisničko ime ili lozinka", Toast.LENGTH_SHORT).show()
                     }
                 } else {

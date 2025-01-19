@@ -11,7 +11,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile"
+        android:text="Profil"
         android:textSize="24sp"
         android:textColor="#000000"
         android:gravity="center"
@@ -23,7 +23,7 @@
         android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username: Loading..."
+        android:text="Korisničko ime: Učitavam..."
         android:textSize="18sp"
         android:textColor="#000000"
         android:layout_marginBottom="16dp"
@@ -34,7 +34,7 @@
         android:id="@+id/emailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email: Loading..."
+        android:text="Email: Učitavam..."
         android:textSize="18sp"
         android:textColor="#000000"
         android:layout_marginBottom="24dp"
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Enable Notifications"
+            android:text="Omogući obavijesti"
             android:textSize="16sp"
             android:textColor="#000000"
             android:fontFamily="sans-serif" />
@@ -65,6 +65,17 @@
             android:thumbTint="#D32F2F"
             android:trackTint="#FFCDD2" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/preferenceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Preferiram:"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif" />
+
 
     <Spinner
         android:id="@+id/preferenceSpinner"
@@ -81,9 +92,9 @@
         android:id="@+id/button_view_reviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Reviews"
+        android:text="Pogledaj recenzije"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#D32F2F"
+        android:backgroundTint="#612B2B"
         android:layout_gravity="center_horizontal"
         android:padding="8dp"
         android:elevation="4dp" />

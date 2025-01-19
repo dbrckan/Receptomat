@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F8E8E8">
+    android:background="#F0E7E6">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -14,7 +14,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="#C62828"
+        android:textColor="#000000"
         android:paddingBottom="16dp" />
 
 
@@ -37,7 +37,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
         android:tint="@android:color/white"
-        android:backgroundTint="#C62828"
+        android:backgroundTint="#612B2B"
         android:contentDescription="Add New List" />
 
     <FrameLayout
