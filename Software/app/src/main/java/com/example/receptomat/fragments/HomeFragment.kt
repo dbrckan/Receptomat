@@ -390,7 +390,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             },
                             categories,
                             loggedInUserId,
-                            userPreferenceId ?: -1 // Ako je `null`, koristi -1 kao podrazumijevanu vrijednost
+                            userPreferenceId ?: -1
                         )
 
                         recyclerView.adapter = adapter

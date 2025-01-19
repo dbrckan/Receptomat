@@ -79,7 +79,8 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                 } else {
-                        Toast.makeText(this@LoginActivity, loginResponse?.error ?: "Pogrešno korisničko ime ili lozinka", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, loginResponse?.error ?:
+                        "Pogrešno korisničko ime ili lozinka", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(this@LoginActivity, "Greška na serveru", Toast.LENGTH_SHORT).show()

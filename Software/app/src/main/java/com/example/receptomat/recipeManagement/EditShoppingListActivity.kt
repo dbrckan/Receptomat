@@ -120,7 +120,8 @@ class EditShoppingListActivity : AppCompatActivity() {
                     Toast.makeText(this@EditShoppingListActivity, "List created successfully", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@EditShoppingListActivity, "Error creating list: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditShoppingListActivity, "Error creating list: ${response.body()?.error}",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 

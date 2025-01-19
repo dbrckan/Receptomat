@@ -214,7 +214,8 @@ class ProfileFragment : Fragment() {
                 if (response.isSuccessful && response.body()?.success == true) {
                     Toast.makeText(requireContext(), "Notifications updated successfully", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "Error updating notifications: ${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error updating notifications: ${response.body()?.error}",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 
