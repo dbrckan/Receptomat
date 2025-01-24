@@ -28,6 +28,8 @@ class RecipesActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.tabs)
         viewPager2 = findViewById(R.id.viewpager)
 
+        viewPager2.isUserInputEnabled = false
+
         val mainPagerAdapter = MainPagerAdapter(supportFragmentManager, lifecycle)
 
         mainPagerAdapter.addFragment(
