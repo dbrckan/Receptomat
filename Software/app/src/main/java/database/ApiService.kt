@@ -129,11 +129,34 @@ interface ApiService {
     fun getPreferencesProfile(): Call<PreferenceResponse>
 
 
-
     @POST("/receptomat/update_user_preference.php")
     fun updateUserPreference(@Body request: UpdateUserPreferenceRequest): Call<BasicResponse>
 
     @GET("/receptomat/get_user_preference.php")
     fun getUserPreference(@Query("user_id") userId: Int): Call<UserPreferenceResponse>
+
+    @FormUrlEncoded
+    @POST("receptomat/add_recipe_to_meal_plan.php")
+    fun addRecipeToPlan(
+        @Field("recipe_id") recipeId: Int,
+        @Field("plan_id") planId: Int,
+        @Field("day_id") dayId: Int
+    ): Call<MessageResponse>
+
+    @GET("receptomat/get_plan_by_user.php")
+    fun getPlanIdByUserId(@Query("user_id") userId: Int): Call<PlanResponse>
+    @GET("receptomat/get_recipes_for_day.php")
+    fun getRecipesByDay(
+        @Query("day_id") dayId: Int,
+        @Query("plan_id") planId: Int
+    ): Call<RecipePlanResponse>
+
+    @FormUrlEncoded
+    @POST("receptomat/delete_recipe_plan.php")
+    fun removeRecipeFromPlan(
+        @Field("recipe_id") recipeId: Int,
+        @Field("plan_id") planId: Int,
+        @Field("day_id") dayId: Int
+    ): Call<RecipePlanResponse>
 
 }

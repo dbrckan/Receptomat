@@ -1,5 +1,6 @@
 package com.example.receptomat.entities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -19,6 +20,7 @@ class RecipeAdapter(
     private val onDeleteClick: (RecipeDB) -> Unit,
     private val onEditClick: (RecipeDB) -> Unit,
     private val onFavoriteClick: (RecipeDB) -> Unit,
+    val onAddToMenuClick: (RecipeDB, Int) -> Unit,
     private val categories: List<Category>,
     private val loggedInUserId: Int,
     private val userPreferenceId: Int
@@ -84,6 +86,7 @@ class RecipeAdapter(
                     true
                 }
                 R.id.action_add_to_menu -> {
+                    showAddToMenuDialog(view, recipe)
                     true
                 }
                 else -> false
@@ -103,5 +106,28 @@ class RecipeAdapter(
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         holder.bind(recipe)
+    }
+
+    private fun showAddToMenuDialog(view: View, recipe: RecipeDB) {
+        val days = arrayOf("Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota", "Nedjelja")
+
+        val dayMapping = mapOf(
+            "Ponedjeljak" to 1,
+            "Utorak" to 2,
+            "Srijeda" to 3,
+            "Četvrtak" to 4,
+            "Petak" to 5,
+            "Subota" to 6,
+            "Nedjelja" to 7
+        )
+
+        val builder = AlertDialog.Builder(view.context)
+        builder.setTitle("Odaberite dan za dodavanje recepta")
+        builder.setItems(days) { _, which ->
+            val selectedDay = days[which]
+            val dayId = dayMapping[selectedDay] ?: 1
+            onAddToMenuClick(recipe, dayId)
+        }
+        builder.show()
     }
 }

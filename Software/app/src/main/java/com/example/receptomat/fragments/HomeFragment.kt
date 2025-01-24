@@ -26,6 +26,7 @@ import database.ApiService
 import database.AddFavoriteRecipeRequest
 import database.BasicResponse
 import database.MessageResponse
+import database.PlanResponse
 import database.RetrofitClient
 import database.UserPreferenceResponse
 import retrofit2.Response
@@ -75,6 +76,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             onFavoriteClick = { recipe ->
                 addToFavorites(recipe)
                 true
+            },
+            onAddToMenuClick = { recipe, dayId ->
+                val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+                val userId = sharedPreferences.getInt("user_id", -1)
+
+                if (userId != -1) {
+                    getPlanIdForUser(userId) { planId ->
+                        val recipeId = recipe.recipe_id ?: 0
+                        if (recipeId != 0) {
+                            addRecipeToMealPlan(recipeId, planId, dayId)
+                        } else {
+                            Toast.makeText(requireContext(), "Recept nema validan ID", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Korisnički ID nije pronađen", Toast.LENGTH_SHORT).show()
+                }
             },
             categories,
             loggedInUserId,
@@ -388,6 +406,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                 addToFavorites(recipe)
                                 true
                             },
+                            onAddToMenuClick = { recipe, dayId ->
+                                val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
+                                val userId = sharedPreferences.getInt("user_id", -1)
+
+                                if (userId != -1) {
+                                    getPlanIdForUser(userId) { planId ->
+                                        val recipeId = recipe.recipe_id ?: 0
+                                        if (recipeId != 0) {
+                                            addRecipeToMealPlan(recipeId, planId, dayId)
+                                        } else {
+                                            Toast.makeText(requireContext(), "Recept nema validan ID", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(requireContext(), "Korisnički ID nije pronađen", Toast.LENGTH_SHORT).show()
+                                }
+                            },
                             categories,
                             loggedInUserId,
                             userPreferenceId ?: -1
@@ -402,6 +437,51 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             override fun onFailure(call: Call<List<RecipeDB>>, t: Throwable) {
                 Toast.makeText(requireContext(), "Pogreška pri povezivanju s serverom", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun addRecipeToMealPlan(recipeId: Int, planId: Int, dayId: Int) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        val call = apiService.addRecipeToPlan(recipeId, planId, dayId)
+
+        call.enqueue(object : Callback<MessageResponse> {
+            override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null && responseBody.success) {
+                        Toast.makeText(requireContext(), "Recept uspješno dodan u plan", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), responseBody?.message ?: "Neuspješno dodavanje recepta", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    val error = response.errorBody()?.string() ?: "Neuspješan odgovor"
+                    Toast.makeText(requireContext(), "Greška u odgovoru od servera", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Povezivanje sa serverom nije uspjelo", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getPlanIdForUser(userId: Int, callback: (planId: Int) -> Unit) {
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+
+        apiService.getPlanIdByUserId(userId).enqueue(object : Callback<PlanResponse> {
+            override fun onResponse(call: Call<PlanResponse>, response: Response<PlanResponse>) {
+                if (response.isSuccessful && response.body()?.plan_id != null) {
+                    val planId = response.body()?.plan_id ?: 1
+                    callback(planId)
+                } else {
+                    Toast.makeText(requireContext(), "Greška pri dohvaćanju plana", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<PlanResponse>, t: Throwable) {
+                Log.e("MondayFragment", "Greška pri povezivanju s API-jem", t)
+                Toast.makeText(requireContext(), "Greška pri povezivanju: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

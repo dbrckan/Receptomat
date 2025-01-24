@@ -1,6 +1,7 @@
 package database
 
 import com.example.receptomat.entities.Ingredient
+import com.example.receptomat.entities.RecipePlan
 import java.io.Serializable
 
 
@@ -174,4 +175,13 @@ data class UserPreferenceResponse(
     val preference_id: Int?
 )
 
+data class PlanResponse(
+    val plan_id: Int
+)
+
+data class RecipePlanResponse(
+    val success: Boolean,
+    val data: List<RecipePlan>,
+    val message: String? = null
+)
 
