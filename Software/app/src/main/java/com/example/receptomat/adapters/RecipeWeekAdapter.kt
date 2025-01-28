@@ -28,7 +28,16 @@ class RecipeWeekAdapter(private val recipes: List<RecipePlan>,
                 val recipe = recipes[adapterPosition]
                 onRecipeClick(recipe)
             }
-            recipeImage.setImageResource(R.drawable.nedostupno)
+        }
+    }
+
+    private fun getImageForCategory(categoryName: String): Int {
+        return when (categoryName) {
+            "doručak" -> R.drawable.breakfast
+            "ručak" -> R.drawable.lunch
+            "večera" -> R.drawable.dinner
+            "desert" -> R.drawable.dessert
+            else -> R.drawable.nedostupno
         }
     }
 
@@ -43,6 +52,9 @@ class RecipeWeekAdapter(private val recipes: List<RecipePlan>,
         holder.name.text = recipe.name
         holder.time.text = recipe.time + " minuta"
         holder.category.text = recipe.category_name
+
+        val imageResId = getImageForCategory(recipe.category_name)
+        holder.itemView.findViewById<ImageView>(R.id.ivPicture).setImageResource(imageResId)
 
 
         holder.itemView.findViewById<Button>(R.id.btn_remove_ingredient).setOnClickListener {

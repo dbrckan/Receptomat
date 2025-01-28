@@ -50,7 +50,8 @@ class FavoritesAdapter(
                 }
             }
 
-            recipeImage.setImageResource(imageResId)
+            val categoryImage = getImageForCategory(recipe.category_id)
+            recipeImage.setImageResource(categoryImage)
 
             Log.d("FavoritesAdapter", "Recipe ID: ${recipe.recipe_id}, Category ID: ${recipe.category_id}")
             fetchCategoryName(recipe.category_id) { categoryName ->
@@ -64,6 +65,16 @@ class FavoritesAdapter(
             removeButton.setOnClickListener {
                 onRemoveClick(recipe)
             }
+        }
+    }
+
+    private fun getImageForCategory(categoryId: Int): Int {
+        return when (categoryId) {
+            1 -> R.drawable.breakfast
+            2 -> R.drawable.lunch
+            3 -> R.drawable.dinner
+            4 -> R.drawable.dessert
+            else -> R.drawable.nedostupno
         }
     }
 

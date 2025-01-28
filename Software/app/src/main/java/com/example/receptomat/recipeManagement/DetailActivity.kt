@@ -96,7 +96,15 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-
+    private fun getImageForCategory(categoryId: Int): Int {
+        return when (categoryId) {
+            1 -> R.drawable.breakfast
+            2 -> R.drawable.lunch
+            3 -> R.drawable.dinner
+            4 -> R.drawable.dessert
+            else -> R.drawable.nedostupno
+        }
+    }
 
     private fun fetchItemsForCartAndOpenActivity(recipeId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
@@ -130,10 +138,6 @@ class DetailActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
-
-
-
-
 
 
     private fun fetchRecipeData(recipeId: Int) {
@@ -243,6 +247,12 @@ class DetailActivity : AppCompatActivity() {
         preferenceTextView.text = recipe.preference_name
         recipeMealTextView.text = recipe.category_name
 
+        val categoryId = recipe.category_id ?: -1
+        Log.d("DetailActivity", "Kategorija ID $categoryId")
+        val imageResId = getImageForCategory(categoryId)
+        Log.d("DetailActivity", "Image resource ID: $imageResId")
+        recipeImageView.setImageResource(imageResId)
+
         val ingredientsContainer = findViewById<LinearLayout>(R.id.ingredientsContainer)
 
         ingredientsContainer.removeAllViews()
@@ -264,7 +274,5 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
-
-        recipeImageView.setImageResource(R.drawable.nedostupno)
     }
 }

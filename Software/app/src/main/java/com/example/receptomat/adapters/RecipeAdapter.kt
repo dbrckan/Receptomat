@@ -41,7 +41,8 @@ class RecipeAdapter(
             val category = categories.find { it.category_id == recipe.category_id }
             categoryRecipe.text = category?.name ?: "Nepoznato"
 
-            recipeImage.setImageResource(R.drawable.nedostupno)
+            val categoryImage = getImageForCategory(recipe.category_id)
+            recipeImage.setImageResource(categoryImage)
 
             ivOverflowMenu.setOnClickListener {
                 showPopupMenu(it, recipe)
@@ -60,6 +61,16 @@ class RecipeAdapter(
             } else {
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color))
             }
+        }
+    }
+
+    private fun getImageForCategory(categoryId: Int): Int {
+        return when (categoryId) {
+            1 -> R.drawable.breakfast
+            2 -> R.drawable.lunch
+            3 -> R.drawable.dinner
+            4 -> R.drawable.dessert
+            else -> R.drawable.nedostupno
         }
     }
 
