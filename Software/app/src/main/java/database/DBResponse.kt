@@ -152,7 +152,15 @@ data class RecipeItem(
     val unit: String
 )
 
+data class IngredientsRequest(
+    val recipe_id: Int,
+    val ingredients: List<Ingredient>
+)
 
+data class IngredientsResponse(
+    val success: Boolean,
+    val message: String?
+)
 
 data class UpdateUserPreferenceRequest(
     val user_id: Int,

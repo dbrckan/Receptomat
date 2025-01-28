@@ -52,14 +52,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         if (loggedInUserId != -1) {
             fetchUserPreference(loggedInUserId) { preferenceId ->
-                fetchRecipesWithPreference(preferenceId)
+                fetchRecipesWithPreference(preferenceId, loggedInUserId)
             }
         }
 
         recyclerView = view.findViewById(R.id.rv_recipes)
         adapter = RecipeAdapter(
             recipes,
-
             onItemClick = { selectedRecipe ->
                 val intent = Intent(requireContext(), DetailActivity::class.java).apply {
                     putExtra("RECIPE_DATA", selectedRecipe)
@@ -96,7 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             },
             categories,
             loggedInUserId,
-            userPreferenceId = -1
+            loggedInUserId ?: -1 // Ovdje osiguraj da je userPreferenceId proslijeđen
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
@@ -374,7 +373,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
     }
 
-    private fun fetchRecipesWithPreference(userPreferenceId: Int?) {
+    private fun fetchRecipesWithPreference(userPreferenceId: Int?, loggedInUserId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val call = apiService.getRecipes()
 
@@ -385,49 +384,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         recipes.clear()
                         recipes.addAll(recipeDBList)
 
+                        // Primjer upotrebe loggedInUserId unutar ove funkcije
+                        Log.d("FetchRecipes", "Logged in user ID: $loggedInUserId")
 
-                        adapter = RecipeAdapter(
-                            recipes,
-                            onItemClick = { selectedRecipe ->
-                                val intent = Intent(requireContext(), DetailActivity::class.java).apply {
-                                    putExtra("RECIPE_DATA", selectedRecipe)
-                                }
-                                startActivity(intent)
-                            },
-                            onDeleteClick = { recipe ->
-                                showDeleteConfirmationDialog(recipe)
-                            },
-                            onEditClick = { recipe ->
-                                editRecipe(recipe)
-                                true
-                            },
-                            onFavoriteClick = { recipe ->
-                                addToFavorites(recipe)
-                                true
-                            },
-                            onAddToMenuClick = { recipe, dayId ->
-                                val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", MODE_PRIVATE)
-                                val userId = sharedPreferences.getInt("user_id", -1)
-
-                                if (userId != -1) {
-                                    getPlanIdForUser(userId) { planId ->
-                                        val recipeId = recipe.recipe_id ?: 0
-                                        if (recipeId != 0) {
-                                            addRecipeToMealPlan(recipeId, planId, dayId)
-                                        } else {
-                                            Toast.makeText(requireContext(), "Recept nema validan ID", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                } else {
-                                    Toast.makeText(requireContext(), "Korisnički ID nije pronađen", Toast.LENGTH_SHORT).show()
-                                }
-                            },
-                            categories,
-                            loggedInUserId,
-                            userPreferenceId ?: -1
-                        )
-
-                        recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     }
                 } else {
                     Toast.makeText(requireContext(), "Pogreška pri učitavanju recepata", Toast.LENGTH_SHORT).show()
@@ -439,6 +399,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
     }
+
 
     private fun addRecipeToMealPlan(recipeId: Int, planId: Int, dayId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)

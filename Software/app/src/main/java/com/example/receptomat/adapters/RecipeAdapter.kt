@@ -2,6 +2,7 @@ package com.example.receptomat.entities
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -55,10 +56,11 @@ class RecipeAdapter(
             }
 
             if (recipe.preference_id == userPreferenceId) {
+                Log.d("RecipeAdapter", "Preference match: setting highlight color")
+                Log.d("RecipaAdapter", "$userPreferenceId")
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.highlight_color))
-            } else if (recipe.user_id == loggedInUserId) {
-                cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color2))
-            } else {
+            }  else {
+                Log.d("RecipeAdapter", "Default case: setting card_color")
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color))
             }
         }

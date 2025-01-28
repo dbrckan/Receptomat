@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.receptomat.R
@@ -19,6 +21,7 @@ import com.example.receptomat.entities.Ingredient
 import com.example.receptomat.entities.Preference
 import com.example.receptomat.entities.Units
 import database.ApiService
+import database.IngredientsRequest
 import database.RecipeRequest
 import database.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
@@ -128,6 +131,7 @@ class EditRecipeActivity : AppCompatActivity() {
                 val response = apiService.updateRecipe(updatedRecipe)
                 if (response.isSuccessful) {
                     Toast.makeText(this@EditRecipeActivity, "Recept uspješno spremljen!", Toast.LENGTH_SHORT).show()
+                    updateIngredients(recipeId)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 } else {
@@ -163,6 +167,43 @@ class EditRecipeActivity : AppCompatActivity() {
             }
         }
         return ingredientsList
+    }
+
+    private fun updateIngredients(recipeId: Int) {
+        val ingredients = collectIngredients()
+        if (ingredients.isEmpty()) {
+            Toast.makeText(this, "Nema sastojaka za ažuriranje", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val ingredientsRequest = IngredientsRequest(
+            recipe_id = recipeId,
+            ingredients = ingredients.map {
+                Ingredient(
+                    item_name = it.item_name,
+                    quantity = it.quantity,
+                    unit_id = it.unit_id,
+                    unit_name = it.unit_name
+                )
+            }
+        )
+
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = apiService.updateIngredients(ingredientsRequest)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@EditRecipeActivity, "Sastojci uspješno ažurirani", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@EditRecipeActivity, "Greška pri ažuriranju sastojaka", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@EditRecipeActivity, "Greška: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
@@ -304,22 +345,30 @@ class EditRecipeActivity : AppCompatActivity() {
     }
 
     private fun fetchUnits(ingredientView: View) {
-        val unitSpinner = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         apiService.getUnits().enqueue(object : Callback<List<Units>> {
             override fun onResponse(call: Call<List<Units>>, response: Response<List<Units>>) {
                 if (response.isSuccessful) {
                     val units = response.body() ?: emptyList()
 
-                    if (units.isNotEmpty()) {
-                        val unitAdapter = ArrayAdapter<Units>(this@EditRecipeActivity, android.R.layout.simple_spinner_item, units)
-                        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    val unitAdapter = object : ArrayAdapter<Units>(this@EditRecipeActivity, android.R.layout.simple_spinner_item, units) {
+                        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                            val view = super.getDropDownView(position, convertView, parent)
+                            (view as TextView).text = getItem(position)?.unit_name ?: ""
+                            return view
+                        }
 
-                        val unitSpinner = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
-                        unitSpinner.adapter = unitAdapter
-                    } else {
-                        Toast.makeText(this@EditRecipeActivity, "Nema dostupnih mjernih jedinica", Toast.LENGTH_SHORT).show()
+                        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                            val view = super.getView(position, convertView, parent)
+                            (view as TextView).text = getItem(position)?.unit_name ?: ""
+                            return view
+                        }
                     }
+
+                    unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                    val spinnerUnit = ingredientView.findViewById<Spinner>(R.id.spinner_unit)
+                    spinnerUnit.adapter = unitAdapter
                 } else {
                     Toast.makeText(this@EditRecipeActivity, "Greška pri dohvaćanju mjernih jedinica", Toast.LENGTH_SHORT).show()
                 }

@@ -118,6 +118,10 @@ interface ApiService {
     @POST("receptomat/update_recipe.php")
     suspend fun updateRecipe(@Body updatedRecipe: RecipeRequest): Response<RecipeResponse>
 
+    @POST("receptomat/update_ingredients.php")
+    suspend fun updateIngredients(@Body ingredientsRequest: IngredientsRequest): Response<IngredientsResponse>
+
+
     /*pretrazivanje recepta*/
     @GET("receptomat/search_recipes.php")
     fun searchRecipesByName(@Query("search") name: String): Call<List<RecipeDB>>
