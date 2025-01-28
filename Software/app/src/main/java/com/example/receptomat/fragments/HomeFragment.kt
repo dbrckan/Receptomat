@@ -50,13 +50,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
         val loggedInUserId = sharedPreferences.getInt("user_id", -1)
 
-        if (loggedInUserId != -1) {
-            fetchUserPreference(loggedInUserId) { preferenceId ->
-                fetchRecipesWithPreference(preferenceId, loggedInUserId)
-            }
-        }
-
         recyclerView = view.findViewById(R.id.rv_recipes)
+
         adapter = RecipeAdapter(
             recipes,
             onItemClick = { selectedRecipe ->
@@ -95,10 +90,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             },
             categories,
             loggedInUserId,
-            loggedInUserId ?: -1 // Ovdje osiguraj da je userPreferenceId proslijeđen
+            userPreferenceId = null
         )
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
+
+        if (loggedInUserId != -1) {
+            fetchUserPreference(loggedInUserId) { preferenceId ->
+                val preferenceId2 = preferenceId ?: -1
+
+                adapter.setPreferenceId(preferenceId2)
+                Log.d("Preference", "$preferenceId2")
+
+                fetchRecipesWithPreference(preferenceId2, loggedInUserId)
+            }
+        }
 
         createRecipeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -238,7 +245,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         if (responseBody?.success == true) {
-                            // Ukloni recept iz liste i ažuriraj UI
                             val position = recipes.indexOf(recipe)
                             recipes.removeAt(position)
                             adapter.notifyItemRemoved(position)
@@ -359,6 +365,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             ) {
                 if (response.isSuccessful) {
                     val preferenceId = response.body()?.preference_id
+                    Log.d("Preference", "Dohvaćen preferenceId: $preferenceId")
                     callback(preferenceId)
                 } else {
                     Toast.makeText(requireContext(), "Pogreška pri dohvaćanju preferencije", Toast.LENGTH_SHORT).show()
@@ -373,6 +380,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
     }
 
+
+
     private fun fetchRecipesWithPreference(userPreferenceId: Int?, loggedInUserId: Int) {
         val apiService = RetrofitClient.instance.create(ApiService::class.java)
         val call = apiService.getRecipes()
@@ -384,10 +393,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         recipes.clear()
                         recipes.addAll(recipeDBList)
 
-                        // Primjer upotrebe loggedInUserId unutar ove funkcije
-                        Log.d("FetchRecipes", "Logged in user ID: $loggedInUserId")
-
                         adapter.notifyDataSetChanged()
+
+                        Log.d("FetchRecipes", "Logged in user ID: $loggedInUserId, preference ID: $userPreferenceId")
                     }
                 } else {
                     Toast.makeText(requireContext(), "Pogreška pri učitavanju recepata", Toast.LENGTH_SHORT).show()
@@ -399,6 +407,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
     }
+
 
 
     private fun addRecipeToMealPlan(recipeId: Int, planId: Int, dayId: Int) {

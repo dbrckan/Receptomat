@@ -24,8 +24,13 @@ class RecipeAdapter(
     val onAddToMenuClick: (RecipeDB, Int) -> Unit,
     private val categories: List<Category>,
     private val loggedInUserId: Int,
-    private val userPreferenceId: Int
+    private var userPreferenceId: Int?
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+
+    fun setPreferenceId(preferenceId: Int) {
+        this.userPreferenceId = preferenceId
+        notifyDataSetChanged()
+    }
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val recipeImage: ImageView = view.findViewById(R.id.ivPicture)
@@ -33,7 +38,10 @@ class RecipeAdapter(
         private val timeRecipe: TextView = view.findViewById(R.id.tvTimeRecipe)
         private val ivOverflowMenu: ImageView = itemView.findViewById(R.id.ivOverflowMenu)
         private val categoryRecipe: TextView = view.findViewById(R.id.tvCategoryRecipe)
+        private val ivIcon: ImageView = itemView.findViewById(R.id.ivIcon)
         private val cardView: androidx.cardview.widget.CardView = view.findViewById(R.id.cardView)
+
+
 
         fun bind(recipe: RecipeDB) {
             recipeName.text = recipe.name
@@ -56,13 +64,19 @@ class RecipeAdapter(
             }
 
             if (recipe.preference_id == userPreferenceId) {
-                Log.d("RecipeAdapter", "Preference match: setting highlight color")
-                Log.d("RecipaAdapter", "$userPreferenceId")
+                Log.d("PREFERENCE","ID usera: $userPreferenceId")
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.highlight_color))
             }  else {
-                Log.d("RecipeAdapter", "Default case: setting card_color")
                 cardView.setCardBackgroundColor(itemView.context.getColor(R.color.card_color))
             }
+
+            if (recipe.user_id == loggedInUserId) {
+                ivIcon.visibility = View.VISIBLE
+            } else {
+                ivIcon.visibility = View.GONE
+            }
+
+
         }
     }
 

@@ -71,15 +71,33 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ivOverflowMenu"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:contentDescription="@string/description"
-            android:src="@drawable/ic_more_vert"
-            app:tint="@color/button_start_page_color" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+
+            <ImageView
+                android:id="@+id/ivOverflowMenu"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:contentDescription="@string/description"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/button_start_page_color"/>
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/description"
+                android:src="@drawable/ic_username"
+                android:visibility="gone"
+                app:tint="@color/button_start_page_color" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
