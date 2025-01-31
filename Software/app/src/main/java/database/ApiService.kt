@@ -13,6 +13,7 @@ import retrofit2.http.Query
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
 
 interface ApiService {
     @GET("receptomat/login.php")
@@ -162,5 +163,12 @@ interface ApiService {
         @Field("plan_id") planId: Int,
         @Field("day_id") dayId: Int
     ): Call<RecipePlanResponse>
+
+    @GET("receptomat/sendCode.php")
+    fun requestLoginCode(
+        @Header("X-Authorization") authToken: String,
+        @Query("username") username: String,
+        @Query("fcm_token") fcmToken: String?
+    ): Call<OtpResponse>
 
 }

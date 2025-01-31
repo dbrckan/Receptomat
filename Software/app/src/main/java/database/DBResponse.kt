@@ -193,3 +193,9 @@ data class RecipePlanResponse(
     val message: String? = null
 )
 
+data class OtpResponse(
+    val success: Boolean,
+    val message: String,
+    val sent_code: String?
+)
+

@@ -20,16 +20,14 @@ retrofit = "2.9.0"
 gson = "2.9.0"
 okhttp = "4.9.3"
 firebaseMessagingKtx = "24.1.0"
+googleGmsGoogleServices = "4.4.2"
+firebaseMessaging = "24.1.0"
+firebaseAuth = "23.1.0"
 
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
-google-services-v4315 = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
-gradle-v810 = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -44,8 +42,11 @@ gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 logginginterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 

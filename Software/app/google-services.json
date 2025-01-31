@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "829697509016",
+    "project_id": "receptomat-rampu",
+    "storage_bucket": "receptomat-rampu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829697509016:android:fd6368ad08533b5318f2ed",
+        "android_client_info": {
+          "package_name": "com.example.receptomat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEey9JrA3IEO5QCAlVbdm8vltsBQ9GHKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
