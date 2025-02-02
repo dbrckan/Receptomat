@@ -83,7 +83,6 @@ class ReviewsActivity : AppCompatActivity() {
                                 image_path = recipe.image_path
                             )
                         })
-
                         adapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(this@ReviewsActivity, "Nema pronađenih recenzija", Toast.LENGTH_SHORT).show()

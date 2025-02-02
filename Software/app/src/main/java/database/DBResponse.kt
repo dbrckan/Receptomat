@@ -118,7 +118,6 @@ data class ReviewRequest(
     val rating: Int,
     val date: String
 )
-
 data class ReviewsResponse(
     val success: Boolean,
     val reviews: List<Review>,
