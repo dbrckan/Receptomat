@@ -1,5 +1,9 @@
 # Receptomat
 
+## Prezentacija projekta
+
+Prezentacija projekta u obliku videozapisa dostupna je na sljedećoj poveznici: https://www.youtube.com/watch?v=9BdnlRdWtrw
+
 ## Opis domene
 Ova mobilna aplikacija korisnicima omogućava jednostavan i učinkovit način organizacije, pretrage i prilagodbe recepata s dodatkom opcija za izračun količine sastojaka, upravljanje listom za kupovinu i pohranu recepata. Aplikacija je usmjerena na korisnike koji traže praktične alate za prilagođavanje recepata svojim potrebama i poboljšanje procesa pripreme jela. Registracija i prijava omogućava korisnicima stvaranje vlastitih recepata i ocjenjivanja te komentiranje drugih recepata.
 
